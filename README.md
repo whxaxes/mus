@@ -11,6 +11,7 @@ A server-side javascript template library like nunjucks, it's not complete yet.
 - [x] for
 - [x] if else
 - [x] set
+- [x] raw
 - [x] macro
 - [x] filter
 - [ ] extend
