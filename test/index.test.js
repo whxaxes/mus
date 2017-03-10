@@ -105,12 +105,12 @@ describe('lib#index', () => {
 
   it('should support macro', () => {
     assert(mus.renderString('{% macro test(a) %}{{ a }}{% endmacro %}{{ test("123") }}') === '123');
-    
+    assert(mus.renderString('{% macro test() %}123{% endmacro %}{{ test() }}') === '123');
   });
   
   it('should support macro use parent\'s scope', () => {
-    const str = '{% macro test(a) %}({{ a }}{{ item }}){% endmacro %}{% for item in list %}{{ test("123") }}{% endfor %}';
-    assert(mus.renderString(str, { list: [1, 2] }) === '(1231)(1232)');
+    const str = '{% macro test(a) %}({{ a }}{{ item }}){% endmacro %}{% for item in list %}{{ test("123") }}{{ test("321") }}{% endfor %}';
+    assert(mus.renderString(str, { list: [1, 2] }) === '(1231)(3211)(1232)(3212)');
   });
 
   it('should support filter ', () => {
