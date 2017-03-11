@@ -20,7 +20,7 @@ A server-side javascript template library like nunjucks, it's not complete yet.
 
 ## how to use
 
-```javascript
+```terminal
 npm install node-mus
 ```
 
