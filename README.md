@@ -4,7 +4,7 @@
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
-A server-side javascript template library like nunjucks, it's not complete yet.
+A server-side javascript template library like nunjucks.
 
 ## support
 
