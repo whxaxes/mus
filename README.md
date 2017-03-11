@@ -26,7 +26,7 @@ npm install node-mus
 ```
 
 ```javascript
-const Mus = require('Mus');
+const Mus = require('node-mus');
 const mus = new Mus();
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 ```
