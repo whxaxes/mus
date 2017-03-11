@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('../lib/utils');
+const utils = require('../lib/utils/utils');
 const assert = require('power-assert');
 
 describe('lib#utils', () => {
