@@ -8,6 +8,12 @@
   <title>{{ title }}</title>
 </head>
 <body>
-  {{ content | safe }}
+  {% block main %}
+    test.tpl content
+  {% endblock %}
+
+  {% block script %}
+    default script
+  {% endblock %}
 </body>
 </html>

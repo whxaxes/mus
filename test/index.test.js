@@ -107,10 +107,23 @@ describe('lib#index', () => {
     assert(mus.renderString('{% macro test(a) %}{{ a }}{% endmacro %}{{ test("123") }}') === '123');
     assert(mus.renderString('{% macro test() %}123{% endmacro %}{{ test() }}') === '123');
   });
-  
+
   it('should support macro use parent\'s scope', () => {
     const str = '{% macro test(a) %}({{ a }}{{ item }}){% endmacro %}{% for item in list %}{{ test("123") }}{{ test("321") }}{% endfor %}';
     assert(mus.renderString(str, { list: [1, 2] }) === '(1231)(3211)(1232)(3212)');
+  });
+
+  it('should support extends and block', () => {
+    const html = mus.render('test3', { title: 'special title' });
+    assert(html.indexOf('special title') >= 0);
+    assert(html.indexOf('test3.tpl content') >= 0);
+    assert(html.indexOf('test.tpl content') < 0);
+  });
+
+  it('should support include', () => {
+    const html = mus.render('test3.tpl', { title: 'special title', test: '112233' });
+    assert(html.indexOf('112233') >= 0);
+    assert(html.indexOf('112233333333') >= 0);
   });
 
   it('should support filter ', () => {
@@ -170,20 +183,26 @@ describe('lib#index', () => {
   });
 
   it('should support complex nested', () => {
-    const html = mus.render('test2', {
-      test: '123',
-      html: '<div>123\n321</div>',
-      list: [{
-        url: 'http://baidu.com',
-        name: 'test',
-        show: false,
-        subjects: [{ subName: 'subjects1' }, { subName: 'subjects2' }]
-      }, {
-        name: 'test2',
-        show: true,
-      }]
-    });
+    const html = mus.renderString(
+      `{% extends 'test' %}
+       {% block main %}
+        {% include 'test2' %}
+       {% endblock %}`,
+      {
+        test: '123',
+        html: '<div>123\n321</div>',
+        list: [{
+          url: 'http://baidu.com',
+          name: 'test',
+          show: false,
+          subjects: [{ subName: 'subjects1' }, { subName: 'subjects2' }]
+        }, {
+          name: 'test2',
+          show: true,
+        }]
+      });
 
+    assert(html.indexOf('default script') >= 0);
     assert(html.indexOf('aa {% {{ bla bla') >= 0);
     assert(html.indexOf('{% if test2 %}') >= 0);
     assert(html.indexOf('{{ test }}') >= 0);

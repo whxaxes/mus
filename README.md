@@ -5,7 +5,7 @@
 
 A server-side javascript template library like nunjucks, it's not complete yet.
 
-## todo list
+## feature list
 
 - [x] variable
 - [x] for
@@ -14,8 +14,9 @@ A server-side javascript template library like nunjucks, it's not complete yet.
 - [x] raw
 - [x] macro
 - [x] filter
-- [ ] extend
-- [ ] block
+- [x] extend
+- [x] block
+- [x] include
 
 ## test
 
