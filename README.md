@@ -1,5 +1,6 @@
 # Mus
 
+[![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
@@ -50,8 +51,8 @@ npm run cov
 ## License
 MIT
 
-[npm-url]: https://npmjs.org/package/mus
-[npm-image]: http://img.shields.io/npm/v/mus.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/node-mus
+[npm-image]: http://img.shields.io/npm/v/node-mus.svg?style=flat-square
 [travis-url]: https://travis-ci.org/whxaxes/mus
 [travis-image]: http://img.shields.io/travis/whxaxes/mus.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/whxaxes/mus
