@@ -5,7 +5,7 @@
 
 A server-side javascript template library like nunjucks, it's not complete yet.
 
-## feature list
+## support
 
 - [x] variable
 - [x] for
@@ -17,6 +17,23 @@ A server-side javascript template library like nunjucks, it's not complete yet.
 - [x] extend
 - [x] block
 - [x] include
+
+## how to use
+
+```javascript
+npm install node-mus
+```
+
+```javascript
+const Mus = require('Mus');
+const mus = new Mus();
+mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
+```
+
+or you can see the test example
+
+- [test](https://github.com/whxaxes/mus/blob/master/test/template/test.tpl)
+- [test2](https://github.com/whxaxes/mus/blob/master/test/template/test2.tpl)
 
 ## test
 
