@@ -145,7 +145,7 @@ mus.renderString('{% set test = test2 %}{{ test }}', {
 ### raw
 
 ```javascript
-mus.renderString('{% raw %}{{ test }}{% raw %}', {
+mus.renderString('{% raw %}{{ test }}{% endraw %}', {
     test: 2
 }); // {{ test }}
 ```
