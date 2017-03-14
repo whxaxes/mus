@@ -2,6 +2,7 @@
 
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
+[![Appveyor status][appveyor-image]][appveyor-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
 A server-side javascript template library like nunjucks.
@@ -229,10 +230,12 @@ npm run cov
 MIT
 
 [npm-url]: https://npmjs.org/package/node-mus
-[npm-image]: http://img.shields.io/npm/v/node-mus.svg?style=flat-square
+[npm-image]: http://img.shields.io/npm/v/node-mus.svg
 [travis-url]: https://travis-ci.org/whxaxes/mus
-[travis-image]: http://img.shields.io/travis/whxaxes/mus.svg?style=flat-square
+[travis-image]: http://img.shields.io/travis/whxaxes/mus.svg
+[appveyor-url]: https://ci.appveyor.com/project/whxaxes/mus/branch/master
+[appveyor-image]: https://ci.appveyor.com/api/projects/status/github/whxaxes/mus?branch=master&svg=true
 [coveralls-url]: https://coveralls.io/r/whxaxes/mus
-[coveralls-image]: https://img.shields.io/coveralls/whxaxes/mus.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/whxaxes/mus.svg
 
 
