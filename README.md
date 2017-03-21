@@ -102,6 +102,26 @@ mus.renderString('{{ text | nl2br | safe }}', {
 }); // hello <br/> mus;
 ```
 
+or use self-define filter
+
+```javascript
+mus.setFilter('add', (input, a) => {
+  return +input + a;
+});
+
+mus.renderString('{{ text | add(2) }}', {
+  text: 1,
+}); // 3;
+```
+
+build-in filter
+
+ - nl2br
+ - json
+ - escape
+ - reverse
+ - replace
+
 ### comment
 
 ```javascript

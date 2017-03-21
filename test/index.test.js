@@ -12,6 +12,8 @@ describe('lib#index', () => {
   describe('test base feature', () => {
     it('should support variable', () => {
       assert(mus.renderString('<div>{{ test }}</div>', { test: '123' }) === '<div>123</div>');
+      assert(mus.renderString('<div>{{ test || "" }}</div>', { test: null }) === '<div></div>');
+      assert(mus.renderString('<div>{{ test || "" }}</div>', { test: undefined }) === '<div></div>');
     });
 
     it('should run without error under interference', () => {
@@ -60,7 +62,7 @@ describe('lib#index', () => {
           variableEnd: '%>',
           noCache: true,
         });
-        mus.renderString('<% if test %><div><%= test %></div><% endif %>');  
+        mus.renderString('<% if test %><div><%= test %></div><% endif %>');
       } catch (e) {
         return done();
       }
@@ -251,6 +253,17 @@ describe('lib#index', () => {
       assert(mus.renderString('{% for item in [1, 2] | reverse %}{{ item }}{% endfor %}') === '21');
       assert(mus.renderString('{% set myItem = test | nl2br %}{{ myItem | safe }}', { test: '\n' }) === '<br/>');
       assert(mus.renderString('{% if test | isNull %}hello{% endif %}', { test: null }) === 'hello');
+    });
+
+    it('should support pass arguments to filter', () => {
+      assert(mus.renderString('{{ test | replace("1", "2") }}', { test: '1' }) === '2');
+      assert(mus.renderString('{{ test | replace("1") }}', { test: '1' }) === '');
+    });
+
+    it('should support pass arguments to self-define filter', () => {
+      mus.setFilter('passArg', (val, key) => val + key);
+      assert(mus.renderString('{{ test | passArg("23") }}', { test: '1' }) === '123');
+      assert(mus.renderString('{{ test | passArg("\n") | nl2br | safe }}', { test: '1' }) === '1<br/>');
     });
   });
 
