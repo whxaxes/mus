@@ -4,8 +4,6 @@ const Benchmark = require('benchmark');
 const suite = new Benchmark.Suite();
 const nunjucks = require('nunjucks');
 const Mus = require('../lib');
-const Ast = require('../lib/compile/ast');
-const _ = require('lodash');
 const mus = new Mus({
   baseDir: 'test/template',
 });
@@ -75,35 +73,20 @@ const obj = {
   ]
 };
 
-// console.log(mus.renderString(str, obj));
-// console.log(nunjucks.renderString(str, obj));
-
 // add tests
 suite
-  .add('Mus#ast', function() {
-    new Ast(str);
-  })
   .add('Mus#renderString', function() {
     mus.renderString(str, obj);
-  })
-  .add('Mus#render', function() {
-    mus.render('test5.tpl', obj);
-  })
-  .add('Mus#simpleRender', function() {
-    mus.render('test.tpl', obj);
   })
   .add('Nunjucks#renderString', function() {
     nunjucks.renderString(str, obj);
   })
-  .add('Nunjucks#render', function() {
-    nunjucks.render('test5.tpl', obj);
-  })
-  .add('Nunjucks#simpleRender', function() {
-    mus.render('test.tpl', obj);
-  })
   // add listeners
   .on('cycle', function(event) {
     console.log(String(event.target));
+  })
+  .on('complete', function() {
+    console.log('Fastest is ' + this.filter('fastest').map('name'));
   })
   // run async
   .run({ 'async': true });

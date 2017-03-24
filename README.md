@@ -54,19 +54,7 @@ npm run cov
 ## benchmark
 
 ```terminal
-node test/benchmark
-```
-
-result
-
-```terminal
-Mus#ast x 20,762 ops/sec ±1.12% (82 runs sampled)
-Mus#renderString x 22,802 ops/sec ±2.13% (84 runs sampled)
-Mus#render x 21,611 ops/sec ±2.76% (82 runs sampled)
-Mus#simpleRender x 432,315 ops/sec ±1.23% (85 runs sampled)
-Nunjucks#renderString x 828 ops/sec ±3.49% (77 runs sampled)
-Nunjucks#render x 16,622 ops/sec ±2.67% (71 runs sampled)
-Nunjucks#simpleRender x 448,176 ops/sec ±1.12% (82 runs sampled)
+npm run benchmark
 ```
 
 ## options

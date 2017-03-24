@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/**/*.test.js -r intelli-espower-loader",
-    "cov": "istanbul cover _mocha test/**/*.test.js -r intelli-espower-loader"
+    "cov": "istanbul cover _mocha test/**/*.test.js -r intelli-espower-loader",
+    "benchmark": "node benchmark/index"
   },
   "author": "Axes",
   "license": "MIT",
