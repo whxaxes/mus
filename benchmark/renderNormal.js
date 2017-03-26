@@ -33,6 +33,9 @@ const obj = {
   ]
 };
 
+// console.log(mus.render('test6.tpl', obj));
+// console.log(nunjucks.render('test6.tpl', obj));
+
 suite
   .add('Mus#renderNormal', function() {
     mus.render('test6.tpl', obj);
@@ -47,5 +50,4 @@ suite
   .on('complete', function() {
     console.log('Fastest is ' + this.filter('fastest').map('name'));
   })
-  // run async
-  .run({ 'async': true });
+  .run();
