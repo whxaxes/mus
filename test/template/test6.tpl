@@ -3,11 +3,12 @@
 
   {% for item in list %}
     <a href="{{ item.url }}">
-      {{ item.name }} {% if item.show %}( hidden msg ){% endif %}
+      {{ item.name | upper }}
+      {% if item.show %}( hidden msg ){% endif %}
 
       {% if item.subjects %}
-        {% for sub in item.subjects %}
-          <span>{{ item.name }}：{{ sub.subName }}</span>
+        {% for sub in item.subjects | reverse %}
+          <span>{{ item.name }}：{{ sub.subName | upper | lower }}</span>
         {% endfor %}
       {% endif %}
     </a>
@@ -19,7 +20,7 @@
     {% if test2 %}
       {{ test }}
     {% else %}
-      aaaa {{ test }}
+      aaaa {{ test | replace('2', '3') }}
     {% endif %}
   {% endif %}
 

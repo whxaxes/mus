@@ -60,17 +60,17 @@ npm run benchmark
 benchmark result
 
 ```terminal
-Mus#renderString x 53,705 ops/sec ±0.93% (87 runs sampled)
-Nunjucks#renderString x 878 ops/sec ±2.23% (85 runs sampled)
+Mus#renderString x 50,851 ops/sec ±0.95% (88 runs sampled)
+Nunjucks#renderString x 869 ops/sec ±2.35% (87 runs sampled)
 Fastest is Mus#renderString
-Mus#renderExtend x 48,836 ops/sec ±1.04% (88 runs sampled)
-Nunjucks#renderExtend x 17,738 ops/sec ±2.35% (76 runs sampled)
+Mus#renderExtend x 40,506 ops/sec ±1.04% (92 runs sampled)
+Nunjucks#renderExtend x 14,856 ops/sec ±5.70% (78 runs sampled)
 Fastest is Mus#renderExtend
-Mus#renderNormal x 62,793 ops/sec ±0.93% (91 runs sampled)
-Nunjucks#renderNormal x 56,013 ops/sec ±1.00% (90 runs sampled)
-Fastest is Mus#renderNormal
-Mus#renderSimple x 594,982 ops/sec ±1.38% (89 runs sampled)
-Nunjucks#renderSimple x 295,682 ops/sec ±1.45% (82 runs sampled)
+Mus#renderNested x 47,574 ops/sec ±1.42% (91 runs sampled)
+Nunjucks#renderNested x 42,775 ops/sec ±0.96% (91 runs sampled)
+Fastest is Mus#renderNested
+Mus#renderSimple x 595,043 ops/sec ±1.24% (90 runs sampled)
+Nunjucks#renderSimple x 292,816 ops/sec ±1.63% (81 runs sampled)
 Fastest is Mus#renderSimple
 ```
 
@@ -150,13 +150,21 @@ mus.renderString('{{ text | add(2) }}', {
 }); // 3;
 ```
 
-build-in filter
+build-in filter 
 
  - nl2br
  - json
  - escape
  - reverse
  - replace
+ - abs
+ - join
+ - lower
+ - upper
+ - slice
+ - trim
+
+https://github.com/whxaxes/mus/blob/master/lib/utils/filters.js
 
 ### comment
 

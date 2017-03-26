@@ -37,10 +37,10 @@ const obj = {
 // console.log(nunjucks.render('test6.tpl', obj));
 
 suite
-  .add('Mus#renderNormal', function() {
+  .add('Mus#renderNested', function() {
     mus.render('test6.tpl', obj);
   })
-  .add('Nunjucks#renderNormal', function() {
+  .add('Nunjucks#renderNested', function() {
     nunjucks.render('test6.tpl', obj);
   })
   // add listeners

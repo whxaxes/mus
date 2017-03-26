@@ -2,5 +2,5 @@
 
 require('./renderString');
 require('./renderExtend');
-require('./renderNormal');
+require('./renderNested');
 require('./renderSimple');

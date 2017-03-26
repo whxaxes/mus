@@ -7,7 +7,10 @@ const Mus = require('../lib');
 const mus = new Mus({
   baseDir: 'test/template',
 });
-nunjucks.configure('test/template', { autoescape: true });
+nunjucks.configure('test/template', { 
+  autoescape: true,
+  noCache: false,
+});
 
 const str = `
 <div>

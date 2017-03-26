@@ -247,6 +247,7 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test | json | safe }}', { test: { a: '1' } }) === JSON.stringify({ a: '1' }));
       assert(mus.renderString('{{ test | nl2br | safe }}', { test: 'a\nb' }) === 'a<br/>b');
       assert(mus.renderString('{{ test | nl2br | json }}', { test: null }) === '{}');
+      assert(mus.renderString('{{ ["a", 2, 3] | reverse | join("+") | upper }}') === '3+2+A');
     });
 
     it('should support filter in block', () => {

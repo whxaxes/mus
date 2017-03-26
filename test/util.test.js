@@ -3,7 +3,7 @@
 const utils = require('../lib/utils/utils');
 const assert = require('power-assert');
 
-describe('lib#utils', () => {
+describe('lib#utils#utils.js', () => {
   it('forEach should run without error', () => {
     utils.forEach({ a: 1, b: 2 }, (value, key, index, len) => {
       if (index === 0) {
