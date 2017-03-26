@@ -57,6 +57,23 @@ npm run cov
 npm run benchmark
 ```
 
+benchmark result
+
+```terminal
+Mus#renderString x 53,705 ops/sec ±0.93% (87 runs sampled)
+Nunjucks#renderString x 878 ops/sec ±2.23% (85 runs sampled)
+Fastest is Mus#renderString
+Mus#renderExtend x 48,836 ops/sec ±1.04% (88 runs sampled)
+Nunjucks#renderExtend x 17,738 ops/sec ±2.35% (76 runs sampled)
+Fastest is Mus#renderExtend
+Mus#renderNormal x 62,793 ops/sec ±0.93% (91 runs sampled)
+Nunjucks#renderNormal x 56,013 ops/sec ±1.00% (90 runs sampled)
+Fastest is Mus#renderNormal
+Mus#renderSimple x 594,982 ops/sec ±1.38% (89 runs sampled)
+Nunjucks#renderSimple x 295,682 ops/sec ±1.45% (82 runs sampled)
+Fastest is Mus#renderSimple
+```
+
 ## options
 
 - blockStart `default: {%`
