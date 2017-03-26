@@ -24,20 +24,27 @@ or you can see the test example
 - [test](https://github.com/whxaxes/mus/blob/master/test/template/test.tpl)
 - [test2](https://github.com/whxaxes/mus/blob/master/test/template/test2.tpl)
 
-## support
+## feature list
 
-- [x] variable
-- [x] comment
-- [x] for
-- [x] if else
-- [x] set
-- [x] raw
-- [x] macro
-- [x] filter
-- [x] extends
-- [x] block
-- [x] include
+* base
+  - [x] variable
+  - [x] comment
+  - [x] filter
 
+* tags
+  - [x] for
+  - [x] if else
+  - [x] set
+  - [x] raw
+  - [x] macro
+  - [x] extends
+  - [x] block
+  - [x] include
+
+*other
+  - [ ] friendly error
+  - [ ] self-define tag
+  - [ ] browser support
 
 ## test
 
