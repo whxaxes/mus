@@ -4,6 +4,7 @@ const Benchmark = require('benchmark');
 const suite = new Benchmark.Suite();
 const nunjucks = require('nunjucks');
 const Mus = require('../lib');
+const assert = require('power-assert');
 const mus = new Mus({
   baseDir: 'test/template',
 });
@@ -33,8 +34,7 @@ const obj = {
   ]
 };
 
-// console.log(mus.render('test6.tpl', obj));
-// console.log(nunjucks.render('test6.tpl', obj));
+assert(mus.render('test6.tpl', obj).length === nunjucks.render('test6.tpl', obj).length);
 
 suite
   .add('Mus#renderNested', function() {
