@@ -36,15 +36,17 @@ or you can see the test example
   - [x] if else
   - [x] set
   - [x] raw
+  - [ ] filter
   - [x] macro
   - [x] extends
   - [x] block
   - [x] include
 
-*other
+* other
   - [ ] friendly error
   - [ ] self-define tag
   - [ ] browser support
+  - [ ] stream support
 
 ## test
 
