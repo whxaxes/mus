@@ -241,6 +241,7 @@ describe('lib#index', () => {
 
   describe('filter', () => {
     it('should support filter ', () => {
+      assert(mus.renderString('{{ "\n" | safe | nl2br}}') === '<br/>');
       assert(mus.renderString('{{ test | safe | nl2br}}', { test: 'a\nb<div>' }) === 'a<br/>b<div>');
       assert(mus.renderString('{{ test | escape | nl2br | safe }}', { test: 'a\nb<div>' }) === 'a<br/>b&lt;div&gt;');
       assert(mus.renderString('{{ test | json | safe }}', { test: { a: '1' } }) === JSON.stringify({ a: '1' }));
