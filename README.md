@@ -43,7 +43,6 @@ or you can see the test example
   - [x] include
 
 * other
-  - [ ] friendly error
   - [ ] self-define tag
   - [ ] browser support
   - [ ] stream support
