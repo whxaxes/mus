@@ -36,11 +36,25 @@ describe('lib#index', () => {
       try {
         mus.renderString('{{ abc abc }}', { abc: 1 })
       } catch (e) {
+        assert(e.message.indexOf('Unexpected identifier') >= 0);
+        assert(e.message.indexOf('line') >= 0);
         done();
       }
       throw new Error('not throw error');
     });
 
+    it('should throw error if expression has error', (done) => {
+      try {
+        mus.renderString('{{ abc.replace(1, 2) }}', { abc: 1 })
+      } catch (e) {
+        assert(e.message.indexOf('abc.replace is not a function') >= 0);
+        assert(e.message.indexOf('line') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
+    });
+
+    // .replace(1, 2)
     it('should support self-defined blockStart and variableStart', () => {
       const mus = new Mus({
         blockStart: '<%',
@@ -276,6 +290,17 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test }}', { test: 321 }) === '321');
     });
 
+    it('should throw error when render error', done => {
+      try {
+        mus.render('test7', { num: 11 });
+      } catch (e) {
+        assert(e.message.indexOf('replace is not a function') >= 0);
+        assert(e.message.indexOf('test7.tpl') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
+    });
+
     it('should throw error when meeting unknown filter', (done) => {
       try {
         mus.renderString('{{ test | aaa }}', { test: { a: '1' } })
@@ -293,7 +318,7 @@ describe('lib#index', () => {
 
     it('should throw error when meeting unknown block', (done) => {
       try {
-        mus.renderString('{% say %}');
+        mus.renderString('abasdb\naaa{% say %}');
       } catch (e) {
         return done();
       }
