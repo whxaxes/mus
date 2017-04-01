@@ -12,4 +12,4 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - npm test
+  - npm run test-local
