@@ -7,7 +7,7 @@
 
 A server-side javascript template library like nunjucks.
 
-## quick start
+## Quick start
 
 ```terminal
 npm install node-mus
@@ -24,7 +24,7 @@ or you can see the test example
 - [test](https://github.com/whxaxes/mus/blob/master/test/template/test.tpl)
 - [test2](https://github.com/whxaxes/mus/blob/master/test/template/test2.tpl)
 
-## feature list
+## Feature list
 
 * base
   - [x] variable
@@ -44,22 +44,23 @@ or you can see the test example
 
 * other
   - [ ] self-define tag
+  - [x] friendly error
   - [ ] browser support
   - [ ] stream support
 
-## test
+## Test
 
 ```terminal
 npm test
 ```
 
-## coverage
+## Coverage
 
 ```terminal
 npm run cov
 ```
 
-## benchmark
+## Benchmark
 
 ```terminal
 npm run benchmark
@@ -82,41 +83,60 @@ Nunjucks#renderSimple x 292,816 ops/sec ±1.63% (81 runs sampled)
 Fastest is Mus#renderSimple
 ```
 
-## options
+## Options
 
 - blockStart `default: {%`
 - blockEnd  `default: %}`
 - variableStart  `default: {{`
 - variableEnd  `default: }}`
-- noCache  `default: false` 
+- noCache  `default: false`
+- ext `default: tpl`
+
+for example:
 
 ```javascript
 const mus = new Mus({
    blockStart: '<%',
    blockEnd: '%>',
    variableStart: '<%=',
-   variableEnd: '%>'
+   variableEnd: '%>',
+   ext: 'ejs',
 });
 const template = '<% if test %><div><%= test %></div><% endif %>';
 mus.renderString(template, { test: '123' });
 // '<div>123</div>'
+
+mus.render('test', { test: '123' });
+// render test.ejs to '<div>123</div>'
 ```
 
-## apis
+## Apis
 
 ### render(path[, args])
 
 render template file to html
 
+```javascript
+mus.render('test', { text: 'hello' });
+```
+
 ### renderString(html[, args])
 
 render template string to html
+
+```javascript
+mus.renderString('asd{{ text }}', { text: 'hello' });
+```
 
 ### setFilter(name, cb)
 
 create self-defined filter
 
-## feature
+```javascript
+mus.setFilter('join', arr => arr.join(','));
+```
+
+## Base Feature
 
 ### variable
 
@@ -182,7 +202,7 @@ mus.renderString('11{# {{ test }} #}', {
 }); // 11;
 ```
 
-## tags
+## Tags
 
 ### for 
 
@@ -285,6 +305,28 @@ render:
 mus.render('test.tpl'); 
 // hello mus
 ```
+
+## Debug
+
+### friendly error
+
+```terminal
+/Users/wanghx/Workspace/my-project/mus/test/template/test7.tpl:14:3
+
+     12      {% endraw %}
+     13    
+     14      {{ num.replace('aaaa') }}
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+     15    </div>
+
+Error: num.replace is not a function
+    at Object.genError (/Users/wanghx/Workspace/my-project/mus/lib/utils/utils.js:107:19)
+    at Object.throw (/Users/wanghx/Workspace/my-project/mus/lib/utils/utils.js:122:16)
+```
+
+## Author
+
+wanghx
 
 ## License
 MIT

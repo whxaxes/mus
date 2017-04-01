@@ -70,4 +70,21 @@ describe('lib#utils#utils.js', () => {
     assert(lineObj.line === 4);
     assert(lineObj.index === 1);
   });
+  
+  it('throw friendly error', () => {
+    const temp = '{{ 01112131415161718192021\n22232425262728293031\n323334353637383940 }}';
+    const template = `abcabcb\naasdas\nd  ${temp}\n asdas\ndasssssss\nssasdasdasdasdasdasdssssssssssssssssssssssssssss`;
+    const stack = utils.genError('testest', {
+      _ast: { template, fileUrl: 'test/test.tpl' },
+      _index: template.indexOf('{{'),
+      _len: temp.length,
+    }).stack;
+    const arrows = stack.match(/\^+/g);
+    const strList = temp.split('\n');
+    assert(stack.indexOf('test/test.tpl') >= 0);
+    assert(arrows.length === strList.length);
+    strList.forEach((str, index) => {
+      assert(arrows[index].length === str.length);  
+    });
+  })
 });

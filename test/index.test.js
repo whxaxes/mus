@@ -37,7 +37,6 @@ describe('lib#index', () => {
         mus.renderString('{{ abc abc }}', { abc: 1 })
       } catch (e) {
         assert(e.message.indexOf('Unexpected identifier') >= 0);
-        assert(e.message.indexOf('line') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -48,7 +47,6 @@ describe('lib#index', () => {
         mus.renderString('{{ abc.replace(1, 2) }}', { abc: 1 })
       } catch (e) {
         assert(e.message.indexOf('abc.replace is not a function') >= 0);
-        assert(e.message.indexOf('line') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -78,6 +76,7 @@ describe('lib#index', () => {
         });
         mus.renderString('<% if test %><div><%= test %></div><% endif %>');
       } catch (e) {
+        assert(e.message.indexOf('blockStart should be different with variableStart') >= 0);
         return done();
       }
 
@@ -98,6 +97,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% if %}<div>{{ test }}</div>{% endif %}')
       } catch (e) {
+        assert(e.message.indexOf('if condition invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -107,6 +107,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% if test %}<div>{{ test }}</div>{% elseif %}{{ gg }}{% else %}321{% endif %}')
       } catch (e) {
+        assert(e.message.indexOf('elseif condition invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -116,6 +117,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% if test %}<div>{{ test }}</div>{% else %}321{% elseif gg %}{{ gg }}{% endif %}')
       } catch (e) {
+        assert(e.message.indexOf('else behind elseif') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -125,6 +127,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% elseif gg %}{{ gg }}{% else %}321{% endif %}')
       } catch (e) {
+        assert(e.message.indexOf('if block not found') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -165,8 +168,9 @@ describe('lib#index', () => {
 
     it('should throw error if has no iterator', (done) => {
       try {
-        mus.renderString('{% for %}<div>{{ test }}</div>{% endfor %}')
+        mus.renderString('{% for item in  %}<div>{{ test }}</div>{% endfor %}')
       } catch (e) {
+        assert(e.message.indexOf('expression invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -184,6 +188,17 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% set %}')
       } catch (e) {
+        assert(e.message.indexOf('set expression invalid') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error if only has key', (done) => {
+      try {
+        mus.renderString('{% set key =  %}')
+      } catch (e) {
+        assert(e.message.indexOf('expression invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -212,6 +227,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% macro %}asd{% endmacro %}')
       } catch (e) {
+        assert(e.message.indexOf('macro name invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -230,6 +246,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% extends %}')
       } catch (e) {
+        assert(e.message.indexOf('extends url invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -239,6 +256,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% block %}{% endblock %}')
       } catch (e) {
+        assert(e.message.indexOf('block name invalid') >= 0);
         done();
       }
       throw new Error('not throw error');
@@ -295,7 +313,6 @@ describe('lib#index', () => {
         mus.render('test7', { num: 11 });
       } catch (e) {
         assert(e.message.indexOf('replace is not a function') >= 0);
-        assert(e.message.indexOf('test7.tpl') >= 0);
         done();
       }
       throw new Error('not throw error');
