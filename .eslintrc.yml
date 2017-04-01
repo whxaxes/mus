@@ -1,0 +1,10 @@
+extends: egg
+rules:
+  array-bracket-spacing: off
+  newline-per-chained-call: off
+  no-else-return: off
+  no-new-func: off
+  no-debugger: off
+  valid-jsdoc: off
+  no-console: off
+  no-alert: off

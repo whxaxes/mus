@@ -54,12 +54,6 @@ or you can see the test example
 npm test
 ```
 
-## Coverage
-
-```terminal
-npm run cov
-```
-
 ## Benchmark
 
 ```terminal
