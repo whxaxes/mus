@@ -65,7 +65,7 @@ npm run cov
 npm run benchmark
 ```
 
-benchmark result
+benchmark result, compare with Nunjucks
 
 ```terminal
 Mus#renderString x 50,851 ops/sec ±0.95% (88 runs sampled)
