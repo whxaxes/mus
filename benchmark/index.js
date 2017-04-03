@@ -1,6 +1,6 @@
 'use strict';
 
-require('./renderString');
+require('./renderNoCache');
 require('./renderExtend');
 require('./renderNested');
 require('./renderSimple');

@@ -36,7 +36,7 @@ describe('lib#index', () => {
       try {
         mus.renderString('{{ abc abc }}', { abc: 1 })
       } catch (e) {
-        assert(e.message.indexOf('Unexpected identifier') >= 0);
+        assert(e.message.indexOf('Unexpected') >= 0);
         done();
       }
       throw new Error('not throw error');

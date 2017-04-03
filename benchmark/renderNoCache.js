@@ -6,10 +6,10 @@ const nunjucks = require('nunjucks');
 const Mus = require('../lib');
 const mus = new Mus({
   baseDir: 'test/template',
+  noCache: true,
 });
-nunjucks.configure('test/template', { 
-  autoescape: true,
-  noCache: false,
+nunjucks.configure('test/template', {
+  noCache: true,
 });
 
 const str = `
