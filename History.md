@@ -1,4 +1,13 @@
 
+0.5.0 / 2017-04-04
+==================
+
+  * feat: optmize parser logic
+  * docs: update include example
+  * feat: include support args
+  * feat: add parser.js
+  * fix: appveyor test
+
 0.4.0 / 2017-04-01
 ==================
 
