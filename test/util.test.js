@@ -71,7 +71,7 @@ describe('lib#utils#utils.js', () => {
     assert(lineObj.index === 1);
   });
   
-  it('throw friendly error', () => {
+  it('should throw friendly error', () => {
     const temp = '{{ 01112131415161718192021\n22232425262728293031\n323334353637383940 }}';
     const template = `abcabcb\naasdas\nd  ${temp}\n asdas\ndasssssss\nssasdasdasdasdasdasdssssssssssssssssssssssssssss`;
     const stack = utils.genError('testest', {
@@ -86,5 +86,15 @@ describe('lib#utils#utils.js', () => {
     strList.forEach((str, index) => {
       assert(arrows[index].length === str.length);  
     });
-  })
+  });
+
+  it('should throw error correctly without el', (done) => {
+    try {
+      utils.throw('error error');
+    } catch (e) {
+      assert(e.message.indexOf('error error') >= 0);
+      done();
+    }
+    throw new Error('not cache error');
+  });
 });

@@ -2,7 +2,7 @@
 
 const Mus = require('../lib');
 const assert = require('power-assert');
-const mus = new Mus({
+let mus = new Mus({
   baseDir: 'test/template',
   ext: 'tpl',
   noCache: true,
@@ -55,13 +55,14 @@ describe('lib#index', () => {
     // .replace(1, 2)
     it('should support self-defined blockStart and variableStart', () => {
       const mus = new Mus({
+        baseDir: 'test/template',
         blockStart: '<%',
         blockEnd: '%>',
         variableStart: '<%=',
         variableEnd: '%>',
-        noCache: true,
       });
 
+      assert(mus.render('test8', { test: '123' }).indexOf('123') >= 0);
       assert(mus.renderString('<% if test %><div><%= test %></div><% endif %>', { test: '123' }) === '<div>123</div>');
     });
 
@@ -268,6 +269,62 @@ describe('lib#index', () => {
       const html = mus.render('test3.tpl', { title: 'special title', test: '112233' });
       assert(html.indexOf('112233') >= 0);
       assert(html.indexOf('112233333333') >= 0);
+    });
+
+    it('should support string args', () => {
+      const html = mus.renderString('{% include "test7" num="bbbb" %}', { test: '333' });
+      assert(html.indexOf('111') >= 0);
+      assert(html.indexOf('333') >= 0);
+      assert(html.indexOf('bbbb') < 0);
+    });
+
+    it('should support multi args', () => {
+      const html = mus.renderString(
+        '{% include "test7" num = obj.test2 + obj.test test = obj.test %}',
+        { obj: { test: 'yo!', test2: 'bbbb' } }
+      );
+      assert(html.indexOf('111yo!') >= 0);
+      assert(html.indexOf('bla yo!') >= 0);
+      assert(html.indexOf('bbbb') < 0);
+    });
+
+    it('should throw error if include url not exist', (done) => {
+      try {
+        mus.renderString(
+          '{% include  %}',
+          { obj: { test: 'yo!', test2: 'bbbb' } }
+        );
+      } catch (e) {
+        assert(e.message.indexOf('parse error, include url invalid') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error if include url not illegal', (done) => {
+      try {
+        mus.renderString(
+          '{% include "" %}',
+          { obj: { test: 'yo!', test2: 'bbbb' } }
+        );
+      } catch (e) {
+        assert(e.message.indexOf('include url invalid') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error if args has error', (done) => {
+      try {
+        mus.renderString(
+          '{% include "test" test = fuc fuc %}',
+          { obj: { test: 'yo!', test2: 'bbbb' } }
+        );
+      } catch (e) {
+        assert(e.message.indexOf('Unexpected identifier') >= 0);
+        done();
+      }
+      throw new Error('not throw error');
     });
   });
 
