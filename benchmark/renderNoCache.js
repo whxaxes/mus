@@ -78,10 +78,10 @@ const obj = {
 
 // add tests
 suite
-  .add('Mus#renderString', function() {
+  .add('Mus#renderNoCache', function() {
     mus.renderString(str, obj);
   })
-  .add('Nunjucks#renderString', function() {
+  .add('Nunjucks#renderNoCache', function() {
     nunjucks.renderString(str, obj);
   })
   // add listeners
