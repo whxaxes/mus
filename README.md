@@ -284,19 +284,19 @@ mus.render('test2.tpl');
 template 1: test.tpl
 
 ```html
-{% include './test2.tpl' %}
+{% include './test2.tpl' test=obj.text %}
 ```
 
 template 2: test2.tpl
 
 ```html
-hello mus
+hello {{ test }}
 ```
 
 render:
 
 ```javascript
-mus.render('test.tpl'); 
+mus.render('test.tpl', { obj: { text: 'mus' } }); 
 // hello mus
 ```
 
