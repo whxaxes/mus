@@ -1,4 +1,10 @@
 
+0.6.0 / 2017-04-07
+==================
+
+  * feat: remove calculateLine method
+  * feat: add node-underline
+
 0.5.0 / 2017-04-04
 ==================
 
