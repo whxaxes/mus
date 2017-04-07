@@ -13,7 +13,9 @@
   },
   "author": "Axes",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "node-underline": "^1.0.0"
+  },
   "devDependencies": {
     "benchmark": "^2.1.3",
     "eslint": "^3.19.0",

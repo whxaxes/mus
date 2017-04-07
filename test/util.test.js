@@ -46,30 +46,6 @@ describe('lib#utils#utils.js', () => {
   it('escape should run without error', () => {
     assert(utils.escape('<>') === '&lt;&gt;');
   });
-
-  it('calculateLines should run without error', () => {
-    let str = 'abc\ncca\nc\r\n{{';
-
-    let lineObj = utils.calculateLines(str, 8);
-    assert(lineObj.line === 3);
-    assert(lineObj.index === 1);
-
-    lineObj = utils.calculateLines(str, 10);
-    assert(lineObj.line === 4);
-    assert(lineObj.index === 0);
-
-    lineObj = utils.calculateLines(str, 5);
-    assert(lineObj.line === 2);
-    assert(lineObj.index === 2);
-
-    lineObj = utils.calculateLines(str, 2);
-    assert(lineObj.line === 1);
-    assert(lineObj.index === 3);
-
-    lineObj = utils.calculateLines(str, str.indexOf('{{'));
-    assert(lineObj.line === 4);
-    assert(lineObj.index === 1);
-  });
   
   it('should throw friendly error', () => {
     const temp = '{{ 01112131415161718192021\n22232425262728293031\n323334353637383940 }}';
