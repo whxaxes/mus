@@ -64,12 +64,12 @@ describe('lib#utils#utils.js', () => {
     });
   });
 
-  it('should throw error correctly without el', (done) => {
+  it('should throw error correctly without el', () => {
     try {
       utils.throw('error error');
     } catch (e) {
       assert(e.message.indexOf('error error') >= 0);
-      done();
+      return;
     }
     throw new Error('not cache error');
   });
