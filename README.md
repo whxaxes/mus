@@ -36,17 +36,15 @@ or you can see the test example
   - [x] if else
   - [x] set
   - [x] raw
-  - [ ] filter
   - [x] macro
   - [x] extends
   - [x] block
   - [x] include
 
 * other
-  - [ ] self-define tag
+  - [x] custom tag
   - [x] friendly error
   - [ ] browser support
-  - [ ] stream support
 
 ## Test
 
@@ -128,6 +126,20 @@ create self-defined filter
 
 ```javascript
 mus.setFilter('join', arr => arr.join(','));
+```
+
+### registerTag(name, tagOption)
+
+register a custom tag
+
+```javascript
+mus.registerTag('css', {
+  isUnary: true,
+  attrName: 'href',
+  render(attr) {
+    return `<link href="${attr.href}" rel="stylesheet">`;
+  }
+});
 ```
 
 ## Base Feature
@@ -298,6 +310,52 @@ render:
 ```javascript
 mus.render('test.tpl', { obj: { text: 'mus' } }); 
 // hello mus
+```
+
+## Custom Tag
+
+register an unary tag
+
+```javascript
+mus.registerTag('css', {
+  isUnary: true,
+  attrName: 'href',
+  render(attr) {
+    return `<link href="${attr.href}" rel="stylesheet">`;
+  }
+});
+
+mus.renderString('{% css "stylesheet.css" %}')
+mus.renderString('{% css href="stylesheet.css" %}')
+mus.renderString('{% css href=url %}', { url: 'stylesheet.css' })
+// output: <link href="stylesheet.css" rel="stylesheet">
+```
+
+register a multinary tag (need endtag).
+
+```javascript
+mus.registerTag('style', {
+  isUnary: false,
+  render(attr, scope, compiler) {
+    return `<style>${compiler.compile(this.children, scope)}</style>`
+  }
+});
+
+mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}')
+// output: <style>.text{margin: 10px;}</style>
+```
+
+include other template in custom tag
+
+```javascript
+mus.registerTag('require', {
+   isUnary: true,
+   render(attr, scope, compiler) {
+     return compiler.include(attr.url, scope);
+   }
+});
+
+mus.renderString('{% require url="test2.tpl" %}');
 ```
 
 ## Debug
