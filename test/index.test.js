@@ -3,6 +3,7 @@
 const Mus = require('../lib');
 const assert = require('power-assert');
 const path = require('path');
+const utils = require('../lib/utils/utils');
 let mus = new Mus({
   baseDir: 'test/template',
   ext: 'tpl',
@@ -498,7 +499,15 @@ describe('lib#index', () => {
       throw new Error('not throw error')
     });
 
-    it('should run without error when has no endfor', () => {
+    it('should run without error when has no endfor', done => {
+      const saveOut = process.stdout.write;
+      process.stdout.write = function(msg) {
+        process.stdout.write = saveOut;
+        assert(msg.includes('^^^^'));
+        assert(msg.includes('for was not closed'));
+        done();
+      };
+
       const html = mus.renderString(`
       {% if test %}
         {% for item in list %}
@@ -508,6 +517,21 @@ describe('lib#index', () => {
 
       assert(html.includes('<div>1</div>'));
       assert(html.includes('<div>2</div>'));
+    });
+
+    it('should run with warning if not close tag', done => {
+      const saveOut = process.stdout.write;
+      process.stdout.write = function(msg) {
+        process.stdout.write = saveOut;
+        assert(msg.includes('^^^^'));
+        assert(msg.includes('for was not closed'));
+        done();
+      };
+
+      mus.renderString(`
+        {% for item in list %}
+          <div>{{ item }}</div>
+    `, { list: [1, 2] });
     });
 
     it('should support complex nested', () => {
