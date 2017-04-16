@@ -1,4 +1,13 @@
 
+0.7.0 / 2017-04-16
+==================
+
+  * feat: add example
+  * feat: add fileUrl to custom render function
+  * docs: add describtion of custom tag
+  * feat: add warning log
+  * feat: support custom tag
+
 0.6.2 / 2017-04-15
 ==================
 
