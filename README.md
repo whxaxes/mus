@@ -75,6 +75,12 @@ Nunjucks#renderSimple x 283,144 ops/sec ±1.88% (85 runs sampled)
 Fastest is Mus#renderSimple
 ```
 
+## Example
+
+```terminal
+npm run example
+```
+
 ## Options
 
 - blockStart `default: {%`
@@ -357,6 +363,8 @@ mus.registerTag('require', {
 
 mus.renderString('{% require url="test2.tpl" %}');
 ```
+
+[see the example to know more](https://github.com/whxaxes/mus/example/custom/)
 
 ## Debug
 
