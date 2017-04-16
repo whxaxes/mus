@@ -19,11 +19,6 @@ const mus = new Mus();
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 ```
 
-or you can see the test example
-
-- [test](https://github.com/whxaxes/mus/blob/master/test/template/test.tpl)
-- [test2](https://github.com/whxaxes/mus/blob/master/test/template/test2.tpl)
-
 ## Feature list
 
 * base
@@ -364,7 +359,7 @@ mus.registerTag('require', {
 mus.renderString('{% require url="test2.tpl" %}');
 ```
 
-[see the example to know more](https://github.com/whxaxes/mus/example/custom/)
+[see the example to know more](https://github.com/whxaxes/mus/tree/master/example/custom)
 
 ## Debug
 
