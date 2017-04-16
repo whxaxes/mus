@@ -61,17 +61,17 @@ npm run benchmark
 benchmark result, compare with Nunjucks
 
 ```terminal
-Mus#renderString x 50,851 ops/sec ±0.95% (88 runs sampled)
-Nunjucks#renderString x 869 ops/sec ±2.35% (87 runs sampled)
-Fastest is Mus#renderString
-Mus#renderExtend x 40,506 ops/sec ±1.04% (92 runs sampled)
-Nunjucks#renderExtend x 14,856 ops/sec ±5.70% (78 runs sampled)
+Mus#renderNoCache x 7,244 ops/sec ±1.59% (84 runs sampled)
+Nunjucks#renderNoCache x 880 ops/sec ±1.96% (86 runs sampled)
+Fastest is Mus#renderNoCache
+Mus#renderExtend x 39,176 ops/sec ±3.29% (80 runs sampled)
+Nunjucks#renderExtend x 15,426 ops/sec ±3.02% (82 runs sampled)
 Fastest is Mus#renderExtend
-Mus#renderNested x 47,574 ops/sec ±1.42% (91 runs sampled)
-Nunjucks#renderNested x 42,775 ops/sec ±0.96% (91 runs sampled)
+Mus#renderNested x 51,414 ops/sec ±1.33% (87 runs sampled)
+Nunjucks#renderNested x 40,825 ops/sec ±2.44% (86 runs sampled)
 Fastest is Mus#renderNested
-Mus#renderSimple x 595,043 ops/sec ±1.24% (90 runs sampled)
-Nunjucks#renderSimple x 292,816 ops/sec ±1.63% (81 runs sampled)
+Mus#renderSimple x 754,566 ops/sec ±1.32% (91 runs sampled)
+Nunjucks#renderSimple x 283,144 ops/sec ±1.88% (85 runs sampled)
 Fastest is Mus#renderSimple
 ```
 
