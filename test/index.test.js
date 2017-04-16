@@ -361,7 +361,7 @@ describe('lib#index', () => {
   });
 
   describe('custom tag test', () => {
-    it('should support register unary custom tag', () => {
+    it('should support register an unary custom tag', () => {
       const mus = new Mus();
       mus.registerTag('css', {
         isUnary: true,
@@ -376,7 +376,7 @@ describe('lib#index', () => {
       assert(mus.renderString('{% css href=url %}', { url: 'stylesheet.css' }) === '<link href="stylesheet.css" rel="stylesheet">');
     });
 
-    it('should support register multinary custom tag', () => {
+    it('should support register a multinary custom tag', () => {
       const mus = new Mus();
       mus.registerTag('style', {
         noAttr: true,
