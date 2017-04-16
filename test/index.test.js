@@ -2,6 +2,8 @@
 
 const Mus = require('../lib');
 const assert = require('power-assert');
+const path = require('path');
+const utils = require('../lib/utils/utils');
 let mus = new Mus({
   baseDir: 'test/template',
   ext: 'tpl',
@@ -32,22 +34,22 @@ describe('lib#index', () => {
       assert(mus.renderString('<div>{{ test === "123" ? "321" : "123" }}</div>', { test: '123' }) === '<div>321</div>');
     });
 
-    it('should throw error if expression has grammatical errors', (done) => {
+    it('should throw error if expression has grammatical errors', () => {
       try {
         mus.renderString('{{ abc abc }}', { abc: 1 })
       } catch (e) {
-        assert(e.message.indexOf('Unexpected') >= 0);
-        done();
+        assert(e.message.includes('Unexpected'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if expression has error', (done) => {
+    it('should throw error if expression has error', () => {
       try {
         mus.renderString('{{ abc.replace(1, 2) }}', { abc: 1 })
       } catch (e) {
-        assert(e.message.indexOf('abc.replace is not a function') >= 0);
-        done();
+        assert(e.message.includes('abc.replace is not a function'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -62,11 +64,11 @@ describe('lib#index', () => {
         variableEnd: '%>',
       });
 
-      assert(mus.render('test8', { test: '123' }).indexOf('123') >= 0);
+      assert(mus.render('test8', { test: '123' }).includes('123'));
       assert(mus.renderString('<% if test %><div><%= test %></div><% endif %>', { test: '123' }) === '<div>123</div>');
     });
 
-    it('should throw the error if the blockStart are the same as variableStart', (done) => {
+    it('should throw the error if the blockStart are the same as variableStart', () => {
       try {
         const mus = new Mus({
           blockStart: '<%',
@@ -77,8 +79,8 @@ describe('lib#index', () => {
         });
         mus.renderString('<% if test %><div><%= test %></div><% endif %>');
       } catch (e) {
-        assert(e.message.indexOf('blockStart should be different with variableStart') >= 0);
-        return done();
+        assert(e.message.includes('blockStart should be different with variableStart'));
+        return;
       }
 
       throw new Error('not throw error');
@@ -94,42 +96,42 @@ describe('lib#index', () => {
       assert(mus.renderString(html) === '321');
     });
 
-    it('should throw error if ifBlock has no condition', (done) => {
+    it('should throw error if ifBlock has no condition', () => {
       try {
         mus.renderString('{% if %}<div>{{ test }}</div>{% endif %}')
       } catch (e) {
-        assert(e.message.indexOf('if condition invalid') >= 0);
-        done();
+        assert(e.message.includes('if condition invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if elseifBlock has no condition', (done) => {
+    it('should throw error if elseifBlock has no condition', () => {
       try {
         mus.renderString('{% if test %}<div>{{ test }}</div>{% elseif %}{{ gg }}{% else %}321{% endif %}')
       } catch (e) {
-        assert(e.message.indexOf('elseif condition invalid') >= 0);
-        done();
+        assert(e.message.includes('elseif condition invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if elseBlock behind elseifBlock', (done) => {
+    it('should throw error if elseBlock behind elseifBlock', () => {
       try {
         mus.renderString('{% if test %}<div>{{ test }}</div>{% else %}321{% elseif gg %}{{ gg }}{% endif %}')
       } catch (e) {
-        assert(e.message.indexOf('else behind elseif') >= 0);
-        done();
+        assert(e.message.includes('else behind elseif'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if has no ifBlock', (done) => {
+    it('should throw error if has no ifBlock', () => {
       try {
         mus.renderString('{% elseif gg %}{{ gg }}{% else %}321{% endif %}')
       } catch (e) {
-        assert(e.message.indexOf('if block not found') >= 0);
-        done();
+        assert(e.message.includes('if block not found'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -167,12 +169,12 @@ describe('lib#index', () => {
         }) === '1-list:1list:22-list2:1list2:2');
     });
 
-    it('should throw error if has no iterator', (done) => {
+    it('should throw error if has no iterator', () => {
       try {
         mus.renderString('{% for item in  %}<div>{{ test }}</div>{% endfor %}')
       } catch (e) {
-        assert(e.message.indexOf('expression invalid') >= 0);
-        done();
+        assert(e.message.includes('expression invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -185,22 +187,22 @@ describe('lib#index', () => {
       assert(mus.renderString(html, { list: [1] }) === '123123');
     });
 
-    it('should throw error if has no key-value', (done) => {
+    it('should throw error if has no key-value', () => {
       try {
         mus.renderString('{% set %}')
       } catch (e) {
-        assert(e.message.indexOf('set expression invalid') >= 0);
-        done();
+        assert(e.message.includes('set expression invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if only has key', (done) => {
+    it('should throw error if only has key', () => {
       try {
         mus.renderString('{% set key =  %}')
       } catch (e) {
-        assert(e.message.indexOf('expression invalid') >= 0);
-        done();
+        assert(e.message.includes('expression invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -224,12 +226,12 @@ describe('lib#index', () => {
       assert(mus.renderString(str, { list: [1, 2] }) === '(1231)(3211)(1232)(3212)');
     });
 
-    it('should throw error if has no name', (done) => {
+    it('should throw error if has no name', () => {
       try {
         mus.renderString('{% macro %}asd{% endmacro %}')
       } catch (e) {
-        assert(e.message.indexOf('macro name invalid') >= 0);
-        done();
+        assert(e.message.includes('macro name invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -238,27 +240,27 @@ describe('lib#index', () => {
   describe('extends&block', () => {
     it('should support extends and block', () => {
       const html = mus.render('test3', { title: 'special title' });
-      assert(html.indexOf('special title') >= 0);
-      assert(html.indexOf('test3.tpl content') >= 0);
-      assert(html.indexOf('test.tpl content') < 0);
+      assert(html.includes('special title'));
+      assert(html.includes('test3.tpl content'));
+      assert(!html.includes('test.tpl content'));
     });
 
-    it('should throw error if extendsBlock has no url', (done) => {
+    it('should throw error if extendsBlock has no url', () => {
       try {
         mus.renderString('{% extends %}')
       } catch (e) {
-        assert(e.message.indexOf('extends url invalid') >= 0);
-        done();
+        assert(e.message.includes('extends url invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if block has no name', (done) => {
+    it('should throw error if block has no name', () => {
       try {
         mus.renderString('{% block %}{% endblock %}')
       } catch (e) {
-        assert(e.message.indexOf('block name invalid') >= 0);
-        done();
+        assert(e.message.includes('block name invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -267,15 +269,15 @@ describe('lib#index', () => {
   describe('include', () => {
     it('should support include', () => {
       const html = mus.render('test3.tpl', { title: 'special title', test: '112233' });
-      assert(html.indexOf('112233') >= 0);
-      assert(html.indexOf('112233333333') >= 0);
+      assert(html.includes('112233'));
+      assert(html.includes('112233333333'));
     });
 
     it('should support string args', () => {
       const html = mus.renderString('{% include "test7" num="bbbb" %}', { test: '333' });
-      assert(html.indexOf('111') >= 0);
-      assert(html.indexOf('333') >= 0);
-      assert(html.indexOf('bbbb') < 0);
+      assert(html.includes('111'));
+      assert(html.includes('333'));
+      assert(!html.includes('bbbb'));
     });
 
     it('should support multi args', () => {
@@ -283,46 +285,46 @@ describe('lib#index', () => {
         '{% include "test7" num = obj.test2 + obj.test test = obj.test %}',
         { obj: { test: 'yo!', test2: 'bbbb' } }
       );
-      assert(html.indexOf('111yo!') >= 0);
-      assert(html.indexOf('bla yo!') >= 0);
-      assert(html.indexOf('bbbb') < 0);
+      assert(html.includes('111yo!'));
+      assert(html.includes('bla yo!'));
+      assert(!html.includes('bbbb'));
     });
 
-    it('should throw error if include url not exist', (done) => {
+    it('should throw error if include url not exist', () => {
       try {
         mus.renderString(
           '{% include  %}',
           { obj: { test: 'yo!', test2: 'bbbb' } }
         );
       } catch (e) {
-        assert(e.message.indexOf('parse error, include url invalid') >= 0);
-        done();
+        assert(e.message.includes('parse error, include url invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if include url not illegal', (done) => {
+    it('should throw error if include url not illegal', () => {
       try {
         mus.renderString(
           '{% include "" %}',
           { obj: { test: 'yo!', test2: 'bbbb' } }
         );
       } catch (e) {
-        assert(e.message.indexOf('include url invalid') >= 0);
-        done();
+        assert(e.message.includes('include url invalid'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error if args has error', (done) => {
+    it('should throw error if args has error', () => {
       try {
         mus.renderString(
           '{% include "test" test = fuc fuc %}',
           { obj: { test: 'yo!', test2: 'bbbb' } }
         );
       } catch (e) {
-        assert(e.message.indexOf('Unexpected identifier') >= 0);
-        done();
+        assert(e.message.includes('Unexpected identifier'));
+        return;
       }
       throw new Error('not throw error');
     });
@@ -358,6 +360,103 @@ describe('lib#index', () => {
     });
   });
 
+  describe('custom tag test', () => {
+    it('should support register an unary custom tag', () => {
+      const mus = new Mus();
+      mus.registerTag('css', {
+        isUnary: true,
+        attrName: 'href',
+        render(attr) {
+          return `<link href="${attr.href}" rel="stylesheet">`;
+        }
+      });
+
+      assert(mus.renderString('{% css "stylesheet.css" %}') === '<link href="stylesheet.css" rel="stylesheet">');
+      assert(mus.renderString('{% css href %}', { href: 'stylesheet.css' }) === '<link href="stylesheet.css" rel="stylesheet">');
+      assert(mus.renderString('{% css href=url %}', { url: 'stylesheet.css' }) === '<link href="stylesheet.css" rel="stylesheet">');
+    });
+
+    it('should support register a multinary custom tag', () => {
+      const mus = new Mus();
+      mus.registerTag('style', {
+        noAttr: true,
+        render(attr, scope, compiler) {
+          return `<style>${compiler.compile(this.children, scope)}</style>`
+        }
+      });
+
+      assert(mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}') === '<style>.text{margin: 10px;}</style>');
+    });
+
+    it('should run without error if render function has no return', () => {
+      const mus = new Mus();
+      mus.registerTag('ooo', {
+        noAttr: true,
+        render(attr, scope, compiler) {}
+      });
+      assert(mus.renderString('{% ooo %}.text{margin: 10px;}{% endooo %}') === '');
+    });
+
+    it('should support include other template', () => {
+      mus.registerTag('require', {
+        attrName: 'url',
+        isUnary: true,
+        render(attr, scope, compiler) {
+          const realUrl = path.join(__dirname + '/template', attr.url);
+          return compiler.include(realUrl, scope);
+        }
+      });
+
+      const html = mus.renderString('{% require "test2.tpl" %}');
+      assert(html.includes('aa {% {{ bla bla'));
+    });
+
+    it('should throw error if attr illegal', () => {
+      try {
+        mus.renderString('{% require abc aaa %}');
+      } catch (e) {
+        assert(e.message.includes('Unexpected identifier'));
+        return;
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error if register a build-in tag', () => {
+      const mus = new Mus();
+      try {
+        mus.registerTag('include', {
+          render() {}
+        });
+      } catch (e) {
+        assert(e.message.includes('build-in tag'));
+        return;
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error without render function', () => {
+      const mus = new Mus();
+      try {
+        mus.registerTag('hole', {});
+      } catch (e) {
+        assert(e.message.includes('render function must exist'));
+        return;
+      }
+      throw new Error('not throw error');
+    });
+
+    it('should throw error without tagObj', () => {
+      const mus = new Mus();
+      try {
+        mus.registerTag('hole');
+      } catch (e) {
+        assert(e.message.includes('render function must exist'));
+        return;
+      }
+      throw new Error('not throw error');
+    });
+  });
+
   describe('other test', () => {
     it('should support cache template', () => {
       const mus = new Mus();
@@ -365,21 +464,21 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test }}', { test: 321 }) === '321');
     });
 
-    it('should throw error when render error', done => {
+    it('should throw error when render error', () => {
       try {
         mus.render('test7', { num: 11 });
       } catch (e) {
-        assert(e.message.indexOf('replace is not a function') >= 0);
-        done();
+        assert(e.message.includes('replace is not a function'));
+        return;
       }
       throw new Error('not throw error');
     });
 
-    it('should throw error when meeting unknown filter', (done) => {
+    it('should throw error when meeting unknown filter', () => {
       try {
         mus.renderString('{{ test | aaa }}', { test: { a: '1' } })
       } catch (e) {
-        return done();
+        return;
       }
 
       throw new Error('not throw error')
@@ -390,17 +489,25 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test | aaa }}', { test: '123' }) === '123aaa');
     });
 
-    it('should throw error when meeting unknown block', (done) => {
+    it('should throw error when meeting unknown block', () => {
       try {
         mus.renderString('abasdb\naaa{% say %}');
       } catch (e) {
-        return done();
+        return;
       }
 
       throw new Error('not throw error')
     });
 
-    it('should run without error when has no endfor', () => {
+    it('should run without error when has no endfor', done => {
+      const saveOut = process.stdout.write;
+      process.stdout.write = function(msg) {
+        process.stdout.write = saveOut;
+        assert(msg.includes('^^^^'));
+        assert(msg.includes('for was not closed'));
+        done();
+      };
+
       const html = mus.renderString(`
       {% if test %}
         {% for item in list %}
@@ -408,8 +515,23 @@ describe('lib#index', () => {
       {% endif %}
     `, { test: true, list: [1, 2] });
 
-      assert(html.indexOf('<div>1</div>') >= 0);
-      assert(html.indexOf('<div>2</div>') >= 0);
+      assert(html.includes('<div>1</div>'));
+      assert(html.includes('<div>2</div>'));
+    });
+
+    it('should run with warning if not close tag', done => {
+      const saveOut = process.stdout.write;
+      process.stdout.write = function(msg) {
+        process.stdout.write = saveOut;
+        assert(msg.includes('^^^^'));
+        assert(msg.includes('for was not closed'));
+        done();
+      };
+
+      mus.renderString(`
+        {% for item in list %}
+          <div>{{ item }}</div>
+    `, { list: [1, 2] });
     });
 
     it('should support complex nested', () => {
@@ -432,22 +554,22 @@ describe('lib#index', () => {
           }]
         });
 
-      assert(html.indexOf('default script') >= 0);
-      assert(html.indexOf('aa {% {{ bla bla') >= 0);
-      assert(html.indexOf('{% if test2 %}') >= 0);
-      assert(html.indexOf('{{ test }}') >= 0);
-      assert(html.indexOf('test：subjects1true') >= 0);
-      assert(html.indexOf('test：subjects2true') >= 0);
-      assert(html.indexOf('<a href="http://baidu.com">') >= 0);
-      assert(html.indexOf('&lt;div&gt;123') >= 0);
-      assert(html.indexOf('hidden msg') >= 0);
+      assert(html.includes('default script'));
+      assert(html.includes('aa {% {{ bla bla'));
+      assert(html.includes('{% if test2 %}'));
+      assert(html.includes('{{ test }}'));
+      assert(html.includes('test：subjects1true'));
+      assert(html.includes('test：subjects2true'));
+      assert(html.includes('<a href="http://baidu.com">'));
+      assert(html.includes('&lt;div&gt;123'));
+      assert(html.includes('hidden msg'));
     });
 
-    it('should throw error when file is not exist', done => {
+    it('should throw error when file is not exist', () => {
       try {
         mus.render('asd');
       } catch (e) {
-        done();
+        return;
       }
 
       throw new Error('not throw error');

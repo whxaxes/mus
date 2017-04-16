@@ -36,17 +36,15 @@ or you can see the test example
   - [x] if else
   - [x] set
   - [x] raw
-  - [ ] filter
   - [x] macro
   - [x] extends
   - [x] block
   - [x] include
 
 * other
-  - [ ] self-define tag
+  - [x] custom tag
   - [x] friendly error
   - [ ] browser support
-  - [ ] stream support
 
 ## Test
 
@@ -63,18 +61,24 @@ npm run benchmark
 benchmark result, compare with Nunjucks
 
 ```terminal
-Mus#renderString x 50,851 ops/sec ±0.95% (88 runs sampled)
-Nunjucks#renderString x 869 ops/sec ±2.35% (87 runs sampled)
-Fastest is Mus#renderString
-Mus#renderExtend x 40,506 ops/sec ±1.04% (92 runs sampled)
-Nunjucks#renderExtend x 14,856 ops/sec ±5.70% (78 runs sampled)
+Mus#renderNoCache x 7,244 ops/sec ±1.59% (84 runs sampled)
+Nunjucks#renderNoCache x 880 ops/sec ±1.96% (86 runs sampled)
+Fastest is Mus#renderNoCache
+Mus#renderExtend x 39,176 ops/sec ±3.29% (80 runs sampled)
+Nunjucks#renderExtend x 15,426 ops/sec ±3.02% (82 runs sampled)
 Fastest is Mus#renderExtend
-Mus#renderNested x 47,574 ops/sec ±1.42% (91 runs sampled)
-Nunjucks#renderNested x 42,775 ops/sec ±0.96% (91 runs sampled)
+Mus#renderNested x 51,414 ops/sec ±1.33% (87 runs sampled)
+Nunjucks#renderNested x 40,825 ops/sec ±2.44% (86 runs sampled)
 Fastest is Mus#renderNested
-Mus#renderSimple x 595,043 ops/sec ±1.24% (90 runs sampled)
-Nunjucks#renderSimple x 292,816 ops/sec ±1.63% (81 runs sampled)
+Mus#renderSimple x 754,566 ops/sec ±1.32% (91 runs sampled)
+Nunjucks#renderSimple x 283,144 ops/sec ±1.88% (85 runs sampled)
 Fastest is Mus#renderSimple
+```
+
+## Example
+
+```terminal
+npm run example
 ```
 
 ## Options
@@ -128,6 +132,20 @@ create self-defined filter
 
 ```javascript
 mus.setFilter('join', arr => arr.join(','));
+```
+
+### registerTag(name, tagOption)
+
+register a custom tag
+
+```javascript
+mus.registerTag('css', {
+  isUnary: true,
+  attrName: 'href',
+  render(attr) {
+    return `<link href="${attr.href}" rel="stylesheet">`;
+  }
+});
 ```
 
 ## Base Feature
@@ -299,6 +317,54 @@ render:
 mus.render('test.tpl', { obj: { text: 'mus' } }); 
 // hello mus
 ```
+
+## Custom Tag
+
+register an unary tag
+
+```javascript
+mus.registerTag('css', {
+  isUnary: true,
+  attrName: 'href',
+  render(attr) {
+    return `<link href="${attr.href}" rel="stylesheet">`;
+  }
+});
+
+mus.renderString('{% css "stylesheet.css" %}')
+mus.renderString('{% css href="stylesheet.css" %}')
+mus.renderString('{% css href=url %}', { url: 'stylesheet.css' })
+// output: <link href="stylesheet.css" rel="stylesheet">
+```
+
+register a multinary tag (need endtag).
+
+```javascript
+mus.registerTag('style', {
+  isUnary: false,
+  render(attr, scope, compiler) {
+    return `<style>${compiler.compile(this.children, scope)}</style>`
+  }
+});
+
+mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}')
+// output: <style>.text{margin: 10px;}</style>
+```
+
+include other template in custom tag
+
+```javascript
+mus.registerTag('require', {
+   isUnary: true,
+   render(attr, scope, compiler) {
+     return compiler.include(attr.url, scope);
+   }
+});
+
+mus.renderString('{% require url="test2.tpl" %}');
+```
+
+[see the example to know more](https://github.com/whxaxes/mus/example/custom/)
 
 ## Debug
 

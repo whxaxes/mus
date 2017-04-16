@@ -46,30 +46,35 @@ describe('lib#utils#utils.js', () => {
   it('escape should run without error', () => {
     assert(utils.escape('<>') === '&lt;&gt;');
   });
-  
+
   it('should throw friendly error', () => {
     const temp = '{{ 01112131415161718192021\n22232425262728293031\n323334353637383940 }}';
     const template = `abcabcb\naasdas\nd  ${temp}\n asdas\ndasssssss\nssasdasdasdasdasdasdssssssssssssssssssssssssssss`;
-    const stack = utils.genError('testest', {
-      _ast: { template, fileUrl: 'test/test.tpl' },
-      _index: template.indexOf('{{'),
-      _len: temp.length,
-    }).stack;
+    let stack;
+    try {
+      utils.throw('testest', {
+        _ast: { template, fileUrl: 'test/test.tpl' },
+        _index: template.indexOf('{{'),
+        _len: temp.length,
+      });
+    } catch (e) {
+      stack = e.stack;
+    }
     const arrows = stack.match(/\^+/g);
     const strList = temp.split('\n');
     assert(stack.indexOf('test/test.tpl') >= 0);
     assert(arrows.length === strList.length);
     strList.forEach((str, index) => {
-      assert(arrows[index].length === str.length);  
+      assert(arrows[index].length === str.length);
     });
   });
 
-  it('should throw error correctly without el', (done) => {
+  it('should throw error correctly without el', () => {
     try {
       utils.throw('error error');
     } catch (e) {
       assert(e.message.indexOf('error error') >= 0);
-      done();
+      return;
     }
     throw new Error('not cache error');
   });
