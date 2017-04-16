@@ -109,7 +109,7 @@ mus.setFilter('join', arr => arr.join(','));
 
 ### registerTag(name, tagOption)
 
-register a custom tag. [more detail](https://github.com/whxaxes/mus#custom-tag)
+register a custom tag.
 
 ```javascript
 mus.registerTag('css', {
