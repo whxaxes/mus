@@ -9,6 +9,7 @@
     "cov": "istanbul cover _mocha test/**/*.test.js",
     "lint": "eslint --ext .js lib",
     "lint-fix": "eslint --ext .js --fix lib",
+    "example": "node example/server",
     "benchmark": "node benchmark/index"
   },
   "author": "Axes",
