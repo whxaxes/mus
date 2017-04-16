@@ -19,28 +19,6 @@ const mus = new Mus();
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 ```
 
-## Feature list
-
-* base
-  - [x] variable
-  - [x] comment
-  - [x] filter
-
-* tags
-  - [x] for
-  - [x] if else
-  - [x] set
-  - [x] raw
-  - [x] macro
-  - [x] extends
-  - [x] block
-  - [x] include
-
-* other
-  - [x] custom tag
-  - [x] friendly error
-  - [ ] browser support
-
 ## Test
 
 ```terminal
@@ -123,7 +101,7 @@ mus.renderString('asd{{ text }}', { text: 'hello' });
 
 ### setFilter(name, cb)
 
-create self-defined filter
+create a custom filter
 
 ```javascript
 mus.setFilter('join', arr => arr.join(','));
@@ -173,7 +151,7 @@ mus.renderString('{{ text | nl2br | safe }}', {
 }); // hello <br/> mus;
 ```
 
-or use self-define filter
+use custom filter
 
 ```javascript
 mus.setFilter('add', (input, a) => {
