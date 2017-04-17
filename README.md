@@ -10,17 +10,17 @@ A server-side javascript template library, high performance and extending easily
 ## Benchmark
 
 ```terminal
-Mus#renderExtend x 36,877 ops/sec ±2.89% (83 runs sampled)
-Nunjucks#renderExtend x 13,271 ops/sec ±3.13% (75 runs sampled)
-Swig#renderExtend x 19,510 ops/sec ±2.23% (85 runs sampled)
+Mus#renderExtend x 40,578 ops/sec ±2.35% (84 runs sampled)
+Nunjucks#renderExtend x 14,102 ops/sec ±2.45% (80 runs sampled)
+Swig#renderExtend x 20,764 ops/sec ±2.86% (88 runs sampled)
 Fastest is Mus#renderExtend
-Mus#renderNested x 52,306 ops/sec ±1.12% (88 runs sampled)
-Nunjucks#renderNested x 35,914 ops/sec ±1.76% (83 runs sampled)
-Swig#renderNested x 29,395 ops/sec ±2.02% (88 runs sampled)
+Mus#renderNested x 53,453 ops/sec ±1.69% (85 runs sampled)
+Nunjucks#renderNested x 32,862 ops/sec ±1.75% (86 runs sampled)
+Swig#renderNested x 27,586 ops/sec ±1.76% (86 runs sampled)
 Fastest is Mus#renderNested
-Mus#renderSimple x 724,332 ops/sec ±2.18% (87 runs sampled)
-Nunjucks#renderSimple x 261,417 ops/sec ±6.51% (81 runs sampled)
-Swig#renderSimple x 84,899 ops/sec ±5.04% (80 runs sampled)
+Mus#renderSimple x 708,375 ops/sec ±1.16% (87 runs sampled)
+Nunjucks#renderSimple x 343,384 ops/sec ±1.79% (85 runs sampled)
+Swig#renderSimple x 97,091 ops/sec ±1.76% (85 runs sampled)
 Fastest is Mus#renderSimple
 ```
 
