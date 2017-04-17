@@ -1,4 +1,15 @@
 
+1.0.0 / 2017-04-17
+==================
+
+  * refactor: rename isUnary to unary
+  * refactor: refactor parser and improve performance
+  * feat: remove istanbul ignore
+  * refactor: rename registerTag to setTag
+  * test: update benchmark
+  * test: remove renderNoCache
+  * test: add swig to benchmark
+
 0.7.0 / 2017-04-16
 ==================
 
