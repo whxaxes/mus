@@ -1,5 +1,5 @@
 'use strict';
-const Mus = require('../../lib');
+const Mus = require('../../lib').Mus;
 const fs = require('fs');
 const path = require('path');
 const mus = new Mus({
@@ -12,7 +12,7 @@ const styleList = [];
 const scriptList = [];
 
 // compose html
-mus.registerTag('html', {
+mus.setTag('html', {
   render(attr, scope, compiler) {
     compiler.compile(this.children, scope);
     return `<html lang="${attr.lang}">
@@ -33,21 +33,21 @@ mus.registerTag('html', {
 });
 
 // collect head data
-mus.registerTag('head', {
+mus.setTag('head', {
   render(attr, scope, compiler) {
     header = compiler.compile(this.children, scope);
   },
 });
 
 // collect body data
-mus.registerTag('body', {
+mus.setTag('body', {
   render(attr, scope, compiler) {
     body = compiler.compile(this.children, scope);
   },
 });
 
 // collect stylesheet
-mus.registerTag('style', {
+mus.setTag('style', {
   render(attr, scope, compiler) {
     const atf = attr.hasOwnProperty('atf') ? attr.atf : true;
     const styleContent = compiler.compile(this.children, scope);
@@ -60,7 +60,7 @@ mus.registerTag('style', {
 });
 
 // inline stylesheet
-mus.registerTag('css', {
+mus.setTag('css', {
   isUnary: true,
   attrName: 'href',
   render(attr, scope, compiler) {
@@ -73,14 +73,14 @@ mus.registerTag('css', {
 });
 
 // collect script
-mus.registerTag('script', {
+mus.setTag('script', {
   render(attr, scope, compiler) {
     scriptList.push(compiler.compile(this.children, scope));
   },
 });
 
 // same name require
-mus.registerTag('require', {
+mus.setTag('require', {
   isUnary: true,
   attrName: 'url',
   render(attr, scope, compiler) {

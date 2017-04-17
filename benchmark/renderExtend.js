@@ -4,8 +4,8 @@ const Benchmark = require('benchmark');
 const suite = new Benchmark.Suite();
 const nunjucks = require('nunjucks');
 const swig = require('swig');
-const Mus = require('../lib');
-const mus = new Mus({ baseDir: 'test/template', noCache: false });
+const mus = require('../lib');
+mus.configure({ baseDir: 'test/template', noCache: false });
 nunjucks.configure('test/template', { autoescape: true, noCache: false });
 swig.setDefaults({ loader: swig.loaders.fs('test/template'), cache: 'memory'});
 

@@ -31,13 +31,13 @@ npm install node-mus
 ```
 
 ```javascript
-const Mus = require('node-mus');
-const mus = new Mus();
+const mus = require('node-mus');
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 ```
 
 ## Options
 
+- baseDir `default: __dirname`
 - blockStart `default: {%`
 - blockEnd  `default: %}`
 - variableStart  `default: {{`
@@ -48,7 +48,9 @@ mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 for example:
 
 ```javascript
-const mus = new Mus({
+const mus = require('node-mus');
+mus.configure({
+   baseDir: 'template',
    blockStart: '<%',
    blockEnd: '%>',
    variableStart: '<%=',
@@ -60,10 +62,14 @@ mus.renderString(template, { test: '123' });
 // '<div>123</div>'
 
 mus.render('test', { test: '123' });
-// render test.ejs to '<div>123</div>'
+// render template/test.ejs to '<div>123</div>'
 ```
 
 ## Apis
+
+### configure(options)
+
+configure mus
 
 ### render(path[, args])
 
@@ -89,12 +95,12 @@ create a custom filter
 mus.setFilter('join', arr => arr.join(','));
 ```
 
-### registerTag(name, tagOption)
+### setTag(name, tagOptions)
 
-register a custom tag.
+create a custom tag.
 
 ```javascript
-mus.registerTag('css', {
+mus.setTag('css', {
   isUnary: true,
   attrName: 'href',
   render(attr) {
@@ -275,10 +281,10 @@ mus.render('test.tpl', { obj: { text: 'mus' } });
 
 ## Custom Tag
 
-register an unary tag
+create an unary tag
 
 ```javascript
-mus.registerTag('css', {
+mus.setTag('css', {
   isUnary: true,
   attrName: 'href',
   render(attr) {
@@ -292,10 +298,10 @@ mus.renderString('{% css href=url %}', { url: 'stylesheet.css' })
 // output: <link href="stylesheet.css" rel="stylesheet">
 ```
 
-register a multinary tag (need endtag).
+create a multinary tag (need endtag).
 
 ```javascript
-mus.registerTag('style', {
+mus.setTag('style', {
   isUnary: false,
   render(attr, scope, compiler) {
     return `<style>${compiler.compile(this.children, scope)}</style>`
@@ -309,7 +315,7 @@ mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}')
 include other template in custom tag
 
 ```javascript
-mus.registerTag('require', {
+mus.setTag('require', {
    isUnary: true,
    render(attr, scope, compiler) {
      return compiler.include(attr.url, scope);

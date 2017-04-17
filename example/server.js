@@ -2,10 +2,10 @@
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
-const Mus = require('../lib');
+const mus = require('../lib');
 const regexp = /^\/([^\/]+)\/([^\/]+)/;
 const port = 8989;
-const mus = new Mus({
+mus.configure({
   baseDir: __dirname,
   noCache: true,
 });

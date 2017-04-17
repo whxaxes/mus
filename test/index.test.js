@@ -1,10 +1,11 @@
 'use strict';
 
-const Mus = require('../lib');
+const mus = require('../lib');
+const Mus = mus.Mus;
 const assert = require('power-assert');
 const path = require('path');
 const utils = require('../lib/utils/utils');
-let mus = new Mus({
+mus.configure({
   baseDir: 'test/template',
   ext: 'tpl',
   noCache: true,
@@ -363,7 +364,7 @@ describe('lib#index', () => {
   describe('custom tag test', () => {
     it('should support register an unary custom tag', () => {
       const mus = new Mus();
-      mus.registerTag('css', {
+      mus.setTag('css', {
         isUnary: true,
         attrName: 'href',
         render(attr) {
@@ -378,7 +379,7 @@ describe('lib#index', () => {
 
     it('should support register a multinary custom tag', () => {
       const mus = new Mus();
-      mus.registerTag('style', {
+      mus.setTag('style', {
         noAttr: true,
         render(attr, scope, compiler) {
           return `<style>${compiler.compile(this.children, scope)}</style>`
@@ -390,7 +391,7 @@ describe('lib#index', () => {
 
     it('should run without error if render function has no return', () => {
       const mus = new Mus();
-      mus.registerTag('ooo', {
+      mus.setTag('ooo', {
         noAttr: true,
         render(attr, scope, compiler) {}
       });
@@ -398,7 +399,7 @@ describe('lib#index', () => {
     });
 
     it('should support include other template', () => {
-      mus.registerTag('require', {
+      mus.setTag('require', {
         attrName: 'url',
         isUnary: true,
         render(attr, scope, compiler) {
@@ -424,7 +425,7 @@ describe('lib#index', () => {
     it('should throw error if register a build-in tag', () => {
       const mus = new Mus();
       try {
-        mus.registerTag('include', {
+        mus.setTag('include', {
           render() {}
         });
       } catch (e) {
@@ -437,7 +438,7 @@ describe('lib#index', () => {
     it('should throw error without render function', () => {
       const mus = new Mus();
       try {
-        mus.registerTag('hole', {});
+        mus.setTag('hole', {});
       } catch (e) {
         assert(e.message.includes('render function must exist'));
         return;
@@ -448,7 +449,7 @@ describe('lib#index', () => {
     it('should throw error without tagObj', () => {
       const mus = new Mus();
       try {
-        mus.registerTag('hole');
+        mus.setTag('hole');
       } catch (e) {
         assert(e.message.includes('render function must exist'));
         return;

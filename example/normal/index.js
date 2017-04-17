@@ -1,5 +1,5 @@
 'use strict';
-const Mus = require('../../lib');
+const Mus = require('../../lib').Mus;
 const mus = new Mus({
   baseDir: __dirname,
   noCache: true,
