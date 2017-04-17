@@ -28,6 +28,15 @@ describe('lib#utils#utils.js', () => {
       assert(len === 2);
     });
 
+    const triangle = {a: 1, b: 2, c: 3};
+    function ColoredTriangle() {this.color = 'red';}
+    ColoredTriangle.prototype = triangle;
+    const obj = new ColoredTriangle();
+    utils.forEach(obj, (value, key, index, len) => {
+      assert(len === 1);
+      assert(value === 'red');
+    });
+
     utils.forEach(null, (value, key, index, len) => {
       throw new Error('should not exec null forEach!!');
     });
@@ -36,6 +45,7 @@ describe('lib#utils#utils.js', () => {
   it('cache should run without error', () => {
     assert(utils.cache('asd', 123) === 123);
     assert(utils.cache('asd', 444) === 123);
+    assert(utils.cache('asdd', () => null) === null);
     assert(utils.cache('asdd', () => 123) === 123);
   });
 
@@ -77,5 +87,16 @@ describe('lib#utils#utils.js', () => {
       return;
     }
     throw new Error('not cache error');
+  });
+
+  it('should run without error if no el', (done) => {
+    const saveOut = process.stdout.write;
+    process.stdout.write = function(msg) {
+      process.stdout.write = saveOut;
+      assert(msg.includes('test'));
+      done();
+    };
+
+    utils.warn('test');
   });
 });

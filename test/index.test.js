@@ -188,6 +188,11 @@ describe('lib#index', () => {
       assert(mus.renderString(html, { list: [1] }) === '123123');
     });
 
+    it('should support set object', () => {
+      const html = '{% set sub = { abc: 123 } %}{{ sub.abc }}';
+      assert(mus.renderString(html) === '123');
+    });
+
     it('should throw error if has no key-value', () => {
       try {
         mus.renderString('{% set %}')
@@ -533,6 +538,10 @@ describe('lib#index', () => {
         {% for item in list %}
           <div>{{ item }}</div>
     `, { list: [1, 2] });
+    });
+
+    it('should run without error if has close tag only', () => {
+      assert(mus.renderString('<div>{{ item }}</div>{% endfor %}') === '<div></div>');
     });
 
     it('should support complex nested', () => {

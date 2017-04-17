@@ -5,4 +5,9 @@ describe('lib#compile', () => {
     compiler({});
     compiler({ root: [] });
   });
+
+  it('should run without error if astNode has error type', () => {
+    compiler({ root: [{ type: 4 }] });
+    compiler({ root: [{ type: 1 }] });
+  });
 });
