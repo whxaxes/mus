@@ -10,9 +10,9 @@ A server-side javascript template library, high performance and extending easily
 ## Benchmark
 
 ```terminal
-Mus#renderExtend x 41,714 ops/sec ±1.13% (86 runs sampled)
-Nunjucks#renderExtend x 14,026 ops/sec ±4.18% (73 runs sampled)
-Swig#renderExtend x 14,759 ops/sec ±2.26% (81 runs sampled)
+Mus#renderExtend x 36,877 ops/sec ±2.89% (83 runs sampled)
+Nunjucks#renderExtend x 13,271 ops/sec ±3.13% (75 runs sampled)
+Swig#renderExtend x 19,510 ops/sec ±2.23% (85 runs sampled)
 Fastest is Mus#renderExtend
 Mus#renderNested x 52,306 ops/sec ±1.12% (88 runs sampled)
 Nunjucks#renderNested x 35,914 ops/sec ±1.76% (83 runs sampled)

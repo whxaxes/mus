@@ -41,7 +41,7 @@ suite
     nunjucks.render('test5.tpl', obj);
   })
   .add('Swig#renderExtend', function() {
-    nunjucks.render('test5.tpl', obj);
+    swig.renderFile('test5.tpl', obj);
   })
   // add listeners
   .on('cycle', function(event) {
