@@ -5,7 +5,28 @@
 [![Appveyor status][appveyor-image]][appveyor-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
-A server-side javascript template library like nunjucks.
+A server-side javascript template library, high performance and extending easily.
+
+## Benchmark
+
+```terminal
+Mus#renderNoCache x 6,416 ops/sec ±1.98% (85 runs sampled)
+Nunjucks#renderNoCache x 822 ops/sec ±2.39% (81 runs sampled)
+Swig#renderNoCache x 795 ops/sec ±2.39% (82 runs sampled)
+Fastest is Mus#renderNoCache
+Mus#renderExtend x 41,714 ops/sec ±1.13% (86 runs sampled)
+Nunjucks#renderExtend x 14,026 ops/sec ±4.18% (73 runs sampled)
+Swig#renderExtend x 14,759 ops/sec ±2.26% (81 runs sampled)
+Fastest is Mus#renderExtend
+Mus#renderNested x 52,306 ops/sec ±1.12% (88 runs sampled)
+Nunjucks#renderNested x 35,914 ops/sec ±1.76% (83 runs sampled)
+Swig#renderNested x 29,395 ops/sec ±2.02% (88 runs sampled)
+Fastest is Mus#renderNested
+Mus#renderSimple x 724,332 ops/sec ±2.18% (87 runs sampled)
+Nunjucks#renderSimple x 261,417 ops/sec ±6.51% (81 runs sampled)
+Swig#renderSimple x 84,899 ops/sec ±5.04% (80 runs sampled)
+Fastest is Mus#renderSimple
+```
 
 ## Quick start
 
@@ -17,41 +38,6 @@ npm install node-mus
 const Mus = require('node-mus');
 const mus = new Mus();
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
-```
-
-## Test
-
-```terminal
-npm test
-```
-
-## Benchmark
-
-```terminal
-npm run benchmark
-```
-
-benchmark result, compare with Nunjucks
-
-```terminal
-Mus#renderNoCache x 7,244 ops/sec ±1.59% (84 runs sampled)
-Nunjucks#renderNoCache x 880 ops/sec ±1.96% (86 runs sampled)
-Fastest is Mus#renderNoCache
-Mus#renderExtend x 39,176 ops/sec ±3.29% (80 runs sampled)
-Nunjucks#renderExtend x 15,426 ops/sec ±3.02% (82 runs sampled)
-Fastest is Mus#renderExtend
-Mus#renderNested x 51,414 ops/sec ±1.33% (87 runs sampled)
-Nunjucks#renderNested x 40,825 ops/sec ±2.44% (86 runs sampled)
-Fastest is Mus#renderNested
-Mus#renderSimple x 754,566 ops/sec ±1.32% (91 runs sampled)
-Nunjucks#renderSimple x 283,144 ops/sec ±1.88% (85 runs sampled)
-Fastest is Mus#renderSimple
-```
-
-## Example
-
-```terminal
-npm run example
 ```
 
 ## Options
@@ -355,6 +341,26 @@ mus.renderString('{% require url="test2.tpl" %}');
 Error: num.replace is not a function
     at Object.genError (/Users/wanghx/Workspace/my-project/mus/lib/utils/utils.js:107:19)
     at Object.throw (/Users/wanghx/Workspace/my-project/mus/lib/utils/utils.js:122:16)
+```
+
+## Command
+
+test
+
+```terminal
+npm test
+```
+
+benchmark
+
+```terminal
+npm run benchmark
+```
+
+example
+
+```terminal
+npm run example
 ```
 
 ## Author

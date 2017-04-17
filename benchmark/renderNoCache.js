@@ -4,13 +4,10 @@ const Benchmark = require('benchmark');
 const suite = new Benchmark.Suite();
 const nunjucks = require('nunjucks');
 const Mus = require('../lib');
-const mus = new Mus({
-  baseDir: 'test/template',
-  noCache: true,
-});
-nunjucks.configure('test/template', {
-  noCache: true,
-});
+const swig = require('swig');
+const mus = new Mus({ baseDir: 'test/template', noCache: true });
+nunjucks.configure('test/template', { autoescape: true, noCache: true });
+swig.setDefaults({ loader: swig.loaders.fs('test/template'), cache: false });
 
 const str = `
 <div>
@@ -83,6 +80,9 @@ suite
   })
   .add('Nunjucks#renderNoCache', function() {
     nunjucks.renderString(str, obj);
+  })
+  .add('Swig#renderNoCache', function() {
+    swig.render(str, obj);
   })
   // add listeners
   .on('cycle', function(event) {
