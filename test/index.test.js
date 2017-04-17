@@ -370,7 +370,7 @@ describe('lib#index', () => {
     it('should support register an unary custom tag', () => {
       const mus = new Mus();
       mus.setTag('css', {
-        isUnary: true,
+        unary: true,
         attrName: 'href',
         render(attr) {
           return `<link href="${attr.href}" rel="stylesheet">`;
@@ -406,7 +406,7 @@ describe('lib#index', () => {
     it('should support include other template', () => {
       mus.setTag('require', {
         attrName: 'url',
-        isUnary: true,
+        unary: true,
         render(attr, scope, compiler) {
           const realUrl = path.join(__dirname + '/template', attr.url);
           return compiler.include(realUrl, scope);

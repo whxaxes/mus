@@ -45,7 +45,7 @@ mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 - noCache  `default: false`
 - ext `default: tpl`
 
-for example:
+example:
 
 ```javascript
 const mus = require('node-mus');
@@ -101,7 +101,7 @@ create a custom tag.
 
 ```javascript
 mus.setTag('css', {
-  isUnary: true,
+  unary: true,
   attrName: 'href',
   render(attr) {
     return `<link href="${attr.href}" rel="stylesheet">`;
@@ -285,7 +285,7 @@ create an unary tag
 
 ```javascript
 mus.setTag('css', {
-  isUnary: true,
+  unary: true,
   attrName: 'href',
   render(attr) {
     return `<link href="${attr.href}" rel="stylesheet">`;
@@ -302,7 +302,7 @@ create a multinary tag (need endtag).
 
 ```javascript
 mus.setTag('style', {
-  isUnary: false,
+  unary: false,
   render(attr, scope, compiler) {
     return `<style>${compiler.compile(this.children, scope)}</style>`
   }
@@ -316,7 +316,7 @@ include other template in custom tag
 
 ```javascript
 mus.setTag('require', {
-   isUnary: true,
+   unary: true,
    render(attr, scope, compiler) {
      return compiler.include(attr.url, scope);
    }

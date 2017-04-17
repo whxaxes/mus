@@ -61,7 +61,7 @@ mus.setTag('style', {
 
 // inline stylesheet
 mus.setTag('css', {
-  isUnary: true,
+  unary: true,
   attrName: 'href',
   render(attr, scope, compiler) {
     const cssUrl = path.resolve(
@@ -81,7 +81,7 @@ mus.setTag('script', {
 
 // same name require
 mus.setTag('require', {
-  isUnary: true,
+  unary: true,
   attrName: 'url',
   render(attr, scope, compiler) {
     const nameArr = attr.url.split(path.sep);
