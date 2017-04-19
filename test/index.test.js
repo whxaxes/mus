@@ -41,6 +41,16 @@ describe('lib#index', () => {
       assert(mus.renderString('<div>{{ test1 and test2 }}</div>', { test1: true, test2: '123' }) === '<div>123</div>');
     });
 
+    it('should support if condition in variable', () => {
+      assert(mus.renderString('<div>{{ "123" if test1 }}</div>', { test1: true }) === '<div>123</div>');
+      assert(mus.renderString('<div>{{ "123" if not test1 }}</div>', { test1: false }) === '<div>123</div>');
+      assert(mus.renderString('<div>{{ "123" if test1 else "321" }}</div>', { test1: false }) === '<div>321</div>');
+      assert(mus.renderString('<div>{{ cool("123" if test1 else "321") }}</div>', {
+          test1: false,
+          cool: (str) => str + '1',
+        }) === '<div>3211</div>');
+    });
+
     it('should throw error if expression has grammatical errors', () => {
       try {
         mus.renderString('{{ abc abc }}', { abc: 1 })
