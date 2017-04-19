@@ -35,6 +35,12 @@ describe('lib#index', () => {
       assert(mus.renderString('<div>{{ test === "123" ? "321" : "123" }}</div>', { test: '123' }) === '<div>321</div>');
     });
 
+    it('should support smarty style expression', () => {
+      assert(mus.renderString('<div>{{ test1 or test2 }}</div>', { test1: false, test2: '123' }) === '<div>123</div>');
+      assert(mus.renderString('<div>{{ not test1 }}</div>', { test1: false }) === '<div>true</div>');
+      assert(mus.renderString('<div>{{ test1 and test2 }}</div>', { test1: true, test2: '123' }) === '<div>123</div>');
+    });
+
     it('should throw error if expression has grammatical errors', () => {
       try {
         mus.renderString('{{ abc abc }}', { abc: 1 })

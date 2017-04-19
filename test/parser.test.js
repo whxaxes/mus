@@ -70,7 +70,7 @@ describe('lib#compile#parser', () => {
       let result = parser.parseString('f.say + abc + 66 === nihao');
       assert(!result.needWith);
       assert(find(result.list, '_$o.f.say'));
-      assert(find(result.list, '+'));
+      assert(find(result.list, ' + '));
       assert(find(result.list, '_$o.abc'));
       assert(find(result.list, '66'));
       assert(find(result.list, '_$o.nihao'));
@@ -88,7 +88,7 @@ describe('lib#compile#parser', () => {
       assert(find(result.list, '_$o.say'));
       assert(find(result.list, '_$o.you'));
 
-      result = parser.parseString('(abc_s > a && b) ? obj.aa: bb.xx');
+      result = parser.parseString('(abc_s > a && b) ? !obj.aa: bb.xx');
       assert(!result.needWith);
       assert(find(result.list, '_$o.abc_s'));
       assert(find(result.list, '_$o.a'));
@@ -103,6 +103,15 @@ describe('lib#compile#parser', () => {
       assert(find(result.list, '_$o.tell'));
       assert(find(result.list, '123'));
       assert(find(result.list, '_$o.b.sasa'));
+    });
+
+    it('should parse special operator correct', () => {
+      let result = parser.parseString('abc_s and not boo or you');
+      assert(find(result.list, '_$o.abc_s'));
+      assert(find(result.list, ' && ! '));
+      assert(find(result.list, '_$o.boo'));
+      assert(find(result.list, ' || '));
+      assert(find(result.list, '_$o.you'));
     });
 
     it('should parse object string without error', () => {
