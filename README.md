@@ -153,6 +153,8 @@ mus.renderString('<div>{{ "123" if test1 else "321" }}</div>', {
 ### filter
 
 ```javascript
+// expression would be autoescape
+// use safe filter to prevent escape
 mus.renderString('{{ text | nl2br | safe }}', {
   text: 'hello \n mus',
 }); // hello <br/> mus;
@@ -183,6 +185,7 @@ build-in filter
  - upper
  - slice
  - trim
+ - safe
 
 https://github.com/whxaxes/mus/blob/master/lib/utils/filters.js
 
