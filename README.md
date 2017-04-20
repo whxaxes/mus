@@ -125,10 +125,29 @@ mus.renderString('{{ obj.hello }}{{ obj.mus }}', {
 ### expression
 
 ```javascript
-mus.renderString('{{ test > 0 ? text : "nothing" }}', {
-  test: 1,
+mus.renderString('{{ !test ? text : "nothing" }}', {
+  test: false,
   text: 'hello mus',
 }); // hello mus;
+```
+
+### smarty style
+
+and or not
+
+```javascript
+mus.renderString('<div>{{ not test1 and test3 or test2 }}</div>', {
+   test1: false,
+   test2: '123'
+}) // <div>123</div>;
+```
+
+if condition, but I extremely suggested using `a ? b : c` instead.
+
+```javascript
+mus.renderString('<div>{{ "123" if test1 else "321" }}</div>', {
+ test1: false 
+}); // <div>321</div>
 ```
 
 ### filter
@@ -139,7 +158,7 @@ mus.renderString('{{ text | nl2br | safe }}', {
 }); // hello <br/> mus;
 ```
 
-use custom filter
+custom filter
 
 ```javascript
 mus.setFilter('add', (input, a) => {
