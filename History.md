@@ -1,4 +1,11 @@
 
+1.1.0 / 2017-04-20
+==================
+
+  * fix: fix some bug about if condition
+  * feat: support if condition in variable
+  * feat: support smarty style operator
+
 1.0.0 / 2017-04-17
 ==================
 
