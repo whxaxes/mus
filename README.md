@@ -30,22 +30,34 @@ Fastest is Mus#renderSimple
 npm install node-mus
 ```
 
+Or 
+
+```terminal
+yarn install node-mus
+```
+
+Simple demo
+
 ```javascript
 const mus = require('node-mus');
 mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 ```
 
-## Options
+## Apis
 
-- baseDir `default: __dirname`
-- blockStart `default: {%`
-- blockEnd  `default: %}`
-- variableStart  `default: {{`
-- variableEnd  `default: }}`
-- noCache  `default: false`
-- ext `default: tpl`
+### configure(options)
 
-example:
+options
+
+- baseDir `String`, `default: __dirname`
+- blockStart `String`, `default: {%`
+- blockEnd  `String`, `default: %}`
+- variableStart  `String`, `default: {{`
+- variableEnd  `String`, `String`, `default: }}`
+- noCache  `Boolean`, `default: false`
+- ext `String`, `default: tpl`
+
+example
 
 ```javascript
 const mus = require('node-mus');
@@ -65,37 +77,58 @@ mus.render('test', { test: '123' });
 // render template/test.ejs to '<div>123</div>'
 ```
 
-## Apis
-
-### configure(options)
-
-configure mus
-
 ### render(path[, args])
 
-render template file to html
+render template file
 
 ```javascript
 mus.render('test', { text: 'hello' });
+// render test.tpl to string
 ```
 
 ### renderString(html[, args])
 
-render template string to html
+render template string
 
 ```javascript
 mus.renderString('asd{{ text }}', { text: 'hello' });
+// output: asdhello
 ```
 
 ### setFilter(name, cb)
 
-create a custom filter
+create a custom filter.
 
 ```javascript
 mus.setFilter('join', arr => arr.join(','));
 ```
 
+using
+
+```javascript
+mus.renderString('{{ text | join }}', { text: [1, 2] });
+// output: 12
+```
+
 ### setTag(name, tagOptions)
+
+tagOptions
+
+- unary `Boolean`, `if true, endtag was needed`
+- attrName `String`, `default attribute name, default is 'default'`
+- render(attr, scope, compiler) `Function`, `render function`
+
+render function args
+
+- attr `Object`, `attribute in tag`
+- scope `Object`, `render scope`
+- compiler `Object`, `compiler object`
+
+compiler property
+
+- fileUrl `String`, `template file url`
+- include(templateUrl, scope) `Function`, `include other template file, return rendered string`
+- compile(ast, scope) `Function`, `compile ast to string, return rendered string. e.g. compiler.compile(this.children, scope)`
 
 create a custom tag.
 
@@ -103,11 +136,20 @@ create a custom tag.
 mus.setTag('css', {
   unary: true,
   attrName: 'href',
-  render(attr) {
+  render(attr, scope, compiler) {
     return `<link href="${attr.href}" rel="stylesheet">`;
   }
 });
 ```
+
+using
+
+```javascript
+mus.renderString('{% css "style.css" %}');
+// output: <link href="style.css" rel="stylesheet">
+```
+
+[see the example to get more detail](https://github.com/whxaxes/mus/tree/master/example/custom)
 
 ## Base Feature
 
@@ -131,6 +173,14 @@ mus.renderString('{{ !test ? text : "nothing" }}', {
 }); // hello mus;
 ```
 
+using function
+
+```javascript
+mus.renderString('{{ add(1, 2) }}', {
+  add: (a, b) => a+b,
+}); // 3;
+```
+
 ### smarty style
 
 and or not
@@ -142,12 +192,20 @@ mus.renderString('<div>{{ not test1 and test3 or test2 }}</div>', {
 }) // <div>123</div>;
 ```
 
-if condition, but I extremely suggested using `a ? b : c` instead.
+if condition. but I extremely suggested using `a ? b : c` instead.
 
 ```javascript
 mus.renderString('<div>{{ "123" if test1 else "321" }}</div>', {
  test1: false 
 }); // <div>321</div>
+```
+
+### comment
+
+```javascript
+mus.renderString('11{# {{ test }} #}', {
+  test: 'hello mus',
+}); // 11;
 ```
 
 ### filter
@@ -174,28 +232,20 @@ mus.renderString('{{ text | add(2) }}', {
 
 build-in filter 
 
- - nl2br
- - json
- - escape
- - reverse
- - replace
- - abs
- - join
- - lower
- - upper
- - slice
- - trim
- - safe
+ - nl2br `replace '\n' or '\r\n' to <br/>`
+ - json `JSON.stringify`
+ - escape  `escape html tag`
+ - reverse  `Array#reverse`
+ - replace  `String#replace`
+ - abs  `Math.abs`
+ - join `Array#join`
+ - lower `String#lower`
+ - upper `String#upper`
+ - slice `Array#slice`
+ - trim `String#trim`
+ - safe `use to prevent escape`
 
-https://github.com/whxaxes/mus/blob/master/lib/utils/filters.js
-
-### comment
-
-```javascript
-mus.renderString('11{# {{ test }} #}', {
-  test: 'hello mus',
-}); // 11;
-```
+[source](https://github.com/whxaxes/mus/blob/master/lib/utils/filters.js)
 
 ## Tags
 
@@ -347,7 +397,7 @@ mus.setTag('require', {
 mus.renderString('{% require url="test2.tpl" %}');
 ```
 
-[see the example to know more](https://github.com/whxaxes/mus/tree/master/example/custom)
+[see the example to get more detail](https://github.com/whxaxes/mus/tree/master/example/custom)
 
 ## Debug
 
