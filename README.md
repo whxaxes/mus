@@ -129,8 +129,8 @@ create a custom tag.
 #### compiler property
 
 - fileUrl `String`, `template file url`
-- include(templateUrl, scope) `Function`, `include other template file, return rendered string`
-- compile(ast, scope) `Function`, `compile ast to string, return rendered string. e.g. compiler.compile(this.children, scope)`
+- include(templateUrl, scope) `Function`, `include other template file, would return rendered string`
+- compile(ast, scope) `Function`, `compile ast to string, would return rendered string.`
 
 e.g.
 
@@ -151,7 +151,24 @@ mus.renderString('{% css "style.css" %}');
 // output: <link href="style.css" rel="stylesheet">
 ```
 
-[see the example to get more detail](https://github.com/whxaxes/mus/tree/master/example/custom)
+compile child node, `this` in render function was current tag object.
+
+```javascript
+mus.setTag('style', {
+  render(attr, scope, compiler) {
+    return `<style>${compiler.compile(this.children, scope)}</style>`;
+  }
+});
+```
+
+using
+
+```javascript
+mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}')
+// output: <style>.text{margin: 10px;}</style>
+```
+
+[custom tag example](https://github.com/whxaxes/mus/blob/master/example/custom/index.js)
 
 ## Base Feature
 
@@ -352,54 +369,6 @@ render:
 mus.render('test.tpl', { obj: { text: 'mus' } }); 
 // hello mus
 ```
-
-## Custom Tag
-
-create an unary tag
-
-```javascript
-mus.setTag('css', {
-  unary: true,
-  attrName: 'href',
-  render(attr) {
-    return `<link href="${attr.href}" rel="stylesheet">`;
-  }
-});
-
-mus.renderString('{% css "stylesheet.css" %}')
-mus.renderString('{% css href="stylesheet.css" %}')
-mus.renderString('{% css href=url %}', { url: 'stylesheet.css' })
-// output: <link href="stylesheet.css" rel="stylesheet">
-```
-
-create a multinary tag (need endtag).
-
-```javascript
-mus.setTag('style', {
-  unary: false,
-  render(attr, scope, compiler) {
-    return `<style>${compiler.compile(this.children, scope)}</style>`
-  }
-});
-
-mus.renderString('{% style %}.text{margin: 10px;}{% endstyle %}')
-// output: <style>.text{margin: 10px;}</style>
-```
-
-include other template in custom tag
-
-```javascript
-mus.setTag('require', {
-   unary: true,
-   render(attr, scope, compiler) {
-     return compiler.include(attr.url, scope);
-   }
-});
-
-mus.renderString('{% require url="test2.tpl" %}');
-```
-
-[see the example to get more detail](https://github.com/whxaxes/mus/tree/master/example/custom)
 
 ## Debug
 
