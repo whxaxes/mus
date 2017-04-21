@@ -47,7 +47,7 @@ mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 
 ### configure(options)
 
-options
+#### options
 
 - baseDir `String`, `default: __dirname`
 - blockStart `String`, `default: {%`
@@ -57,7 +57,7 @@ options
 - noCache  `Boolean`, `default: false`
 - ext `String`, `default: tpl`
 
-example
+e.g.
 
 ```javascript
 const mus = require('node-mus');
@@ -112,25 +112,27 @@ mus.renderString('{{ text | join }}', { text: [1, 2] });
 
 ### setTag(name, tagOptions)
 
-tagOptions
+create a custom tag.
+
+#### tagOptions
 
 - unary `Boolean`, `if true, endtag was needed`
 - attrName `String`, `default attribute name, default is 'default'`
 - render(attr, scope, compiler) `Function`, `render function`
 
-render function args
+#### render function args
 
 - attr `Object`, `attribute in tag`
 - scope `Object`, `render scope`
 - compiler `Object`, `compiler object`
 
-compiler property
+#### compiler property
 
 - fileUrl `String`, `template file url`
 - include(templateUrl, scope) `Function`, `include other template file, return rendered string`
 - compile(ast, scope) `Function`, `compile ast to string, return rendered string. e.g. compiler.compile(this.children, scope)`
 
-create a custom tag.
+e.g.
 
 ```javascript
 mus.setTag('css', {
