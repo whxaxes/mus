@@ -58,72 +58,111 @@ describe('lib#compile#parser', () => {
     });
   });
 
-  describe('parseString', () => {
+  describe('parseMacroExpr', () => {
+    it('should parse macro expression without error', () => {
+      parser.parseMacroExpr('test(name, cc = 11)');
+      parser.parseMacroExpr('test(name, cc, aaa)');
+      parser.parseMacroExpr('test(name, cc = "11", bb, aa = test)');
+    });
+  });
+
+  describe('splitOperator', () => {
     it('should parse simple expression without error', () => {
-      assert(find(parser.parseString('abc').list, '_$o.abc'));
-      assert(find(parser.parseString(' "abc"').list, '"abc"'));
-      assert(find(parser.parseString('null').list, 'null'));
-      assert(parser.parseString('(abc_s > a && b) ? obj.aa: bb.xx').list.pop().newExpr === '_$o.bb.xx');
+      assert(find(parser.splitOperator('abc'), '_$o.abc'));
+      assert(find(parser.splitOperator(' "abc"'), '"abc"'));
+      assert(find(parser.splitOperator('null'), 'null'));
+      assert(find(parser.splitOperator('(abc_s > a && b) ? obj.aa: bb.xx'), '_$o.bb.xx'));
     });
 
     it('should parse complex expression without error', () => {
-      let result = parser.parseString('f.say + abc + 66 === nihao');
-      assert(!result.needWith);
-      assert(find(result.list, '_$o.f.say'));
-      assert(find(result.list, ' + '));
-      assert(find(result.list, '_$o.abc'));
-      assert(find(result.list, '66'));
-      assert(find(result.list, '_$o.nihao'));
+      let result = parser.splitOperator('f.say + abc + 66 === nihao');
+      assert(!result.complex);
+      assert(find(result, '_$o.f.say'));
+      assert(find(result, '+'));
+      assert(find(result, '_$o.abc'));
+      assert(find(result, '66'));
+      assert(find(result, '==='));
+      assert(find(result, '_$o.nihao'));
 
-      result = parser.parseString('"cool + 123" + b.sa  ? b.sa : a.sb');
-      assert(!result.needWith);
-      assert(find(result.list, '"cool + 123"'));
-      assert(find(result.list, '_$o.b.sa'));
-      assert(find(result.list, '_$o.b.sa'));
-      assert(find(result.list, '_$o.a.sb'));
+      result = parser.splitOperator('"cool + 123" + b.sa  ? b.sa : a.sb');
+      assert(!result.complex);
+      assert(find(result, '"cool + 123"'));
+      assert(find(result, '_$o.b.sa'));
+      assert(find(result, '_$o.b.sa'));
+      assert(find(result, '_$o.a.sb'));
 
-      result = parser.parseString('absc[ "nihao" + say] + you');
-      assert(!result.needWith);
-      assert(find(result.list, '_$o.absc'));
-      assert(find(result.list, '_$o.say'));
-      assert(find(result.list, '_$o.you'));
+      result = parser.splitOperator('absc[ "nihao" + say] + you');
+      assert(!result.complex);
+      assert(find(result, '_$o.absc'));
+      assert(find(result, '_$o.say'));
+      assert(find(result, '_$o.you'));
 
-      result = parser.parseString('(abc_s > a && b) ? !obj.aa: bb.xx');
-      assert(!result.needWith);
-      assert(find(result.list, '_$o.abc_s'));
-      assert(find(result.list, '_$o.a'));
-      assert(find(result.list, '_$o.b'));
-      assert(find(result.list, '_$o.obj.aa'));
-      assert(find(result.list, '_$o.bb.xx'));
+      result = parser.splitOperator('(abc_s > a && b) ? !obj.aa: bb.xx');
+      assert(!result.complex);
+      assert(find(result, '_$o.abc_s'));
+      assert(find(result, '_$o.a'));
+      assert(find(result, '_$o.b'));
+      assert(find(result, '_$o.obj.aa'));
+      assert(find(result, '_$o.bb.xx'));
     });
 
     it('should parse function string without error', () => {
-      let result = parser.parseString('tell("nihao", true, 123, b.sasa)');
-      assert(!result.needWith);
-      assert(find(result.list, '_$o.tell'));
-      assert(find(result.list, '123'));
-      assert(find(result.list, '_$o.b.sasa'));
+      let result = parser.splitOperator('tell("nihao", true, 123, b.sasa)');
+      assert(!result.complex);
+      assert(find(result, '_$o.tell'));
+      assert(find(result, '123'));
+      assert(find(result, '_$o.b.sasa'));
+    });
+
+    it('should parse function string without error', () => {
+      let result = parser.splitOperator(`a = bbb cc = 111`);
+      assert(!result.complex);
+      assert(find(result, 'a'));
+      assert(find(result, '_$o.bbb'));
+      assert(find(result, 'cc'));
+      assert(find(result, '111'));
+
+      result = parser.splitOperator(`{
+        test: 123,
+        bb: you === sb,
+        [so]: {
+          fuck: 1111,
+          cc: 233
+        }
+      }`);
+      assert(!result.complex);
+      assert(find(result, 'test'));
+      assert(find(result, 'bb'));
+      assert(find(result, '_$o.you'));
+      assert(find(result, '_$o.sb'));
+      assert(find(result, '_$o.so'));
+      assert(find(result, 'fuck'));
+      assert(find(result, 'cc'));
     });
 
     it('should parse special operator correct', () => {
-      let result = parser.parseString('abc_s and not boo or you');
-      assert(find(result.list, '_$o.abc_s'));
-      assert(find(result.list, ' && ! '));
-      assert(find(result.list, '_$o.boo'));
-      assert(find(result.list, ' || '));
-      assert(find(result.list, '_$o.you'));
+      let result = parser.splitOperator('abc_s and not boo or you');
+      assert(find(result, '_$o.abc_s'));
+      assert(find(result, '&&'));
+      assert(find(result, '_$o.boo'));
+      assert(find(result, '||'));
+      assert(find(result, '_$o.you'));
     });
 
     it('should parse object string without error', () => {
-      let result = parser.parseString('{ abc: nihao }');
-      assert(result.needWith);
+      let result = parser.splitOperator('{ abc: `asd${bbb}` }');
+      assert(result.complex);
     });
   });
 });
 
-function find(list, str) {
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].newExpr === str || list[i].expr === str) {
+function find(result, str) {
+  for (let i = 0; i < result.fragments.length; i++) {
+    if (result.fragments[i].type === 'prop') {
+      if (`_$o.${result.fragments[i].expr}` === str) {
+        return true;
+      }
+    } else if (result.fragments[i].expr === str) {
       return true;
     }
   }

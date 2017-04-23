@@ -39,7 +39,10 @@ describe('lib#index', () => {
       assert(mus.renderString('<div>{{ test1 or test2 }}</div>', { test1: false, test2: '123' }) === '<div>123</div>');
       assert(mus.renderString('<div>{{ not test1 }}</div>', { test1: false }) === '<div>true</div>');
       assert(mus.renderString('<div>{{ test1 and test2 }}</div>', { test1: true, test2: '123' }) === '<div>123</div>');
-      assert(mus.renderString('<div>{{ not test1 and test3 or test2 }}</div>', { test1: false, test2: '123' }) === '<div>123</div>');
+      assert(mus.renderString('<div>{{ not test1 and test3 or test2 }}</div>', {
+          test1: false,
+          test2: '123'
+        }) === '<div>123</div>');
     });
 
     it('should support if condition in variable', () => {
@@ -237,6 +240,7 @@ describe('lib#index', () => {
   describe('test macro', () => {
     it('should support macro', () => {
       assert(mus.renderString('{% macro test(a) %}{{ a }}{% endmacro %}{{ test("123") }}') === '123');
+      assert(mus.renderString('{% macro test(a = "123") %}{{ a }}{% endmacro %}{{ test() }}') === '123');
       assert(mus.renderString('{% macro test() %}123{% endmacro %}{{ test() }}') === '123');
     });
 
@@ -249,10 +253,17 @@ describe('lib#index', () => {
       try {
         mus.renderString('{% macro %}asd{% endmacro %}')
       } catch (e) {
-        assert(e.message.includes('macro name invalid'));
+        assert(e.message.includes('macro name was needed'));
         return;
       }
       throw new Error('not throw error');
+    });
+  });
+
+  describe('test import', () => {
+    it('should support import', () => {
+      assert(mus.renderString('{% import "test4" %}{{ item("333333") }}', { test: 123 }).includes('123333333'));
+      assert(mus.renderString('{% import "test4" as obj %}{{ obj.item("333333") }}', { test: 123 }).includes('123333333'));
     });
   });
 
@@ -353,11 +364,11 @@ describe('lib#index', () => {
     it('should support filter ', () => {
       assert(mus.renderString('{{ "\n" | safe | nl2br}}') === '<br/>');
       assert(mus.renderString('{{ test | safe | nl2br}}', { test: 'a\nb<div>' }) === 'a<br/>b<div>');
-      assert(mus.renderString('{{ test | escape | nl2br | safe }}', { test: 'a\nb<div>' }) === 'a<br/>b&lt;div&gt;');
+      assert(mus.renderString('{{ test | escape | nl2br() | safe }}', { test: 'a\nb<div>' }) === 'a<br/>b&lt;div&gt;');
       assert(mus.renderString('{{ test | json | safe }}', { test: { a: '1' } }) === JSON.stringify({ a: '1' }));
       assert(mus.renderString('{{ test | nl2br | safe }}', { test: 'a\nb' }) === 'a<br/>b');
       assert(mus.renderString('{{ test | nl2br | json }}', { test: null }) === '{}');
-      assert(mus.renderString('{{ ["a", 2, 3] | reverse | join("+") | upper }}') === '3+2+A');
+      assert(mus.renderString('{{ ["a", 2, 3] | reverse | join("|") | upper }}') === '3|2|A');
     });
 
     it('should support filter in block', () => {

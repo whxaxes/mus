@@ -28,8 +28,10 @@ describe('lib#utils#utils.js', () => {
       assert(len === 2);
     });
 
-    const triangle = {a: 1, b: 2, c: 3};
+    const triangle = { a: 1, b: 2, c: 3 };
+
     function ColoredTriangle() {this.color = 'red';}
+
     ColoredTriangle.prototype = triangle;
     const obj = new ColoredTriangle();
     utils.forEach(obj, (value, key, index, len) => {
@@ -51,6 +53,16 @@ describe('lib#utils#utils.js', () => {
 
   it('reStringFormat should run without error', () => {
     assert(utils.reStringFormat('$^?{}()') === '\\$\\^\\?\\{\\}\\(\\)');
+  });
+
+  it('set should run without error', () => {
+    const obj = {};
+    utils.simpleSet(obj, 'test', 1);
+    assert(obj.test === 1);
+    utils.simpleSet(obj, 'test2.say', 1);
+    assert(obj.test2.say === 1);
+    utils.simpleSet(obj, 'test2.what', 1);
+    assert(obj.test2.what === 1);
   });
 
   it('escape should run without error', () => {
