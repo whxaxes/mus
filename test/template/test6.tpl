@@ -1,6 +1,17 @@
 <div>
   干扰 bla bla {{ test }}
 
+  {% set obj = {
+    list: [1, 2, 3],
+    test2: {
+      test3: test
+    }
+  } %}
+
+  {% for item in obj.list %}
+    {{ item }}{{ obj.test2.test3 }}
+  {% endfor %}
+
   {% for item in list %}
     <a href="{{ item.url }}">
       {{ item.name | upper }}
@@ -14,7 +25,7 @@
     </a>
   {% endfor %}
 
-  {% if list.length < 1 %}
+  {% if list and list.length < 1 %}
     other hidden msg
   {% else %}
     {% if test2 %}
