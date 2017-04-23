@@ -56,6 +56,7 @@ mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 - variableEnd  `String`, `String`, `default: }}`
 - noCache  `Boolean`, `default: false`
 - ext `String`, `default: tpl`
+- autoescape `Boolean`, `default: true`
 
 e.g.
 
@@ -270,54 +271,134 @@ build-in filter
 
 ### for 
 
+```smarty
+{% for item in list %}
+    ({{ loop.index0 }}:{{ item }})
+{% endfor %}
+```
+
 ```javascript
-mus.renderString('{% for item in list %}({{ loop.index0 }}:{{ item }}){% endfor %}', {
+mus.render('test', {
     list: [1, 2],
 }); // (0:1)(1:2)
 ```
 
 ### if 
 
+```smarty
+{% if test > 1 %}
+    {{ test }}
+{% endif %}
+```
+
 ```javascript
-mus.renderString('{% if test > 1 %}{{ test }}{% endif %}', {
+mus.render('test', {
     test: 2
 }); // 2
 ```
 
+Or
+
+```smarty
+{% if test > 2 %}
+    {{ test }}
+{% elseif test === 2 %}
+    111
+{% else %}
+    333
+{% endif %}
+```
+
 ```javascript
-const tpl = '{% if test > 2 %}{{ test }}{% elseif test === 2 %}111{% else %}333{% endif %}';
-mus.renderString(tpl, {
+mus.render('test', {
     test: 2
 }); // 111
 ```
 
 ### set
 
+```smarty
+{% set test = { say: 'hello' } %}
+
+{{ test.say }}
+```
+
 ```javascript
-mus.renderString('{% set test = test2 %}{{ test }}', {
-    test2: 2,
-}); // 2
+mus.render('test');
+// hello
 ```
 
 ### raw
 
+```smarty
+{% raw %}
+    {{ test }}
+{% endraw %}
+```
+
 ```javascript
-mus.renderString('{% raw %}{{ test }}{% endraw %}', {
+mus.render('test', {
     test: 2
 }); // {{ test }}
 ```
 
 ### macro
 
+```smarty
+{% macro test %}
+    123
+{% endmacro %}
+
+{{ test() }}
+```
+
 ```javascript
-mus.renderString('{% macro test %}123{% endmacro %}{{ test() }}'); // 123
+mus.render('test'); 
+// 123
+```
+
+with arguments
+
+```smarty
+{% macro test(a, b = '123') %}
+  {{ a }}{{ b }}
+{% endmacro %}
+
+{{ test('123') }}
+```
+
+```javascript
+mus.render('test'); 
+// 123123
+```
+
+### import
+
+import other template's macro
+
+```smarty
+{% macro test(a, b = '123') %}
+  {{ a }}{{ b }}
+{% endmacro %}
+```
+
+```smarty
+{% import "test" %}
+{{ test(123) }}
+```
+
+Or
+
+```smarty
+{% import "test" as item %}
+{{ item.test(123) }}
 ```
 
 ### extends & block
 
 template 1: test.tpl
 
-```html
+```smarty
 <!doctype html>
 <html lang="en">
 <head>
@@ -334,7 +415,7 @@ template 1: test.tpl
 
 template 2: test2.tpl
 
-```html
+```smarty
 {% extends './test.tpl' %}
 
 {% block main %}
@@ -353,13 +434,13 @@ mus.render('test2.tpl');
 
 template 1: test.tpl
 
-```html
+```smarty
 {% include './test2.tpl' test=obj.text %}
 ```
 
 template 2: test2.tpl
 
-```html
+```smarty
 hello {{ test }}
 ```
 
