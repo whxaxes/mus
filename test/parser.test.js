@@ -60,9 +60,44 @@ describe('lib#compile#parser', () => {
 
   describe('parseMacroExpr', () => {
     it('should parse macro expression without error', () => {
-      parser.parseMacroExpr('test(name, cc = 11)');
-      parser.parseMacroExpr('test(name, cc, aaa)');
-      parser.parseMacroExpr('test(name, cc = "11", bb, aa = test)');
+      parser.parseMacroExpr('test(name)')
+        .genRender({}, scope => {
+          assert(scope.name === '123');
+        })('123');
+    });
+
+    it('should parse default value without error', () => {
+      parser.parseMacroExpr('test(name, cc = 11)')
+        .genRender({}, scope => {
+          assert(scope.name === '123');
+          assert(scope.cc === 11);
+        })('123');
+      parser.parseMacroExpr('test(name, cc = "11", bb, aa = test)')
+        .genRender({ test: 'g' }, scope => {
+          assert(scope.name === '123');
+          assert(scope.bb === '11');
+          assert(scope.cc === null);
+          assert(scope.aa === 'g');
+        })('123', null, '11');
+    });
+
+    it('should parse default object without error', () => {
+      parser.parseMacroExpr('test(name, cc = { abc: 11, bbb: 11, ccc: a = bb }, bb, aa = test)')
+        .genRender({ test: 'g', bb: '111' }, scope => {
+          assert(scope.name === '123');
+          assert(scope.cc.ccc === '111');
+          assert(scope.aa === 'g');
+        })('123');
+      parser.parseMacroExpr('test(name, cc = [1, 2])')
+        .genRender({}, scope => {
+          assert(scope.name === '123');
+          assert(scope.cc[0] === 1);
+        })('123');
+      parser.parseMacroExpr('test(name, cc = [[1, 2], 2])')
+        .genRender({}, scope => {
+          assert(scope.name === '123');
+          assert(scope.cc[0][1] === 2);
+        })('123');
     });
   });
 
