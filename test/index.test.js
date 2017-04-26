@@ -33,6 +33,7 @@ describe('lib#index', () => {
 
     it('should support expression', () => {
       assert(mus.renderString('<div>{{ test === "123" ? "321" : "123" }}</div>', { test: '123' }) === '<div>321</div>');
+      assert(mus.renderString('<div>{{ `${test}123` }}</div>', { test: '123' }) === '<div>123123</div>');
     });
 
     it('should support smarty style expression', () => {
@@ -83,6 +84,14 @@ describe('lib#index', () => {
 
       assert(mus.render('test8', { test: '123' }).includes('123'));
       assert(mus.renderString('<% if test %><div><%= test %></div><% endif %>', { test: '123' }) === '<div>123</div>');
+    });
+
+    it('should render without escape if autoescape setting was false', () => {
+      const mus = new Mus({
+        autoescape: false,
+      });
+
+      assert(mus.renderString('{{ test }}', { test: '<div></div>' }) === '<div></div>');
     });
 
     it('should throw the error if the blockStart are the same as variableStart', () => {
@@ -241,7 +250,7 @@ describe('lib#index', () => {
     it('should support macro', () => {
       assert(mus.renderString('{% macro test(a) %}{{ a }}{% endmacro %}{{ test("123") }}') === '123');
       assert(mus.renderString('{% macro test(a = "123") %}{{ a }}{% endmacro %}{{ test() }}') === '123');
-      assert(mus.renderString('{% macro test() %}123{% endmacro %}{{ test() }}') === '123');
+      assert(mus.renderString('{% macro test %}123{% endmacro %}{{ test() }}') === '123');
     });
 
     it('should support macro use parent\'s scope', () => {
@@ -264,6 +273,27 @@ describe('lib#index', () => {
     it('should support import', () => {
       assert(mus.renderString('{% import "test4" %}{{ item("333333") }}', { test: 123 }).includes('123333333'));
       assert(mus.renderString('{% import "test4" as obj %}{{ obj.item("333333") }}', { test: 123 }).includes('123333333'));
+    });
+
+    it('should warning if import a non-macro template', done => {
+      const saveOut = process.stdout.write;
+      process.stdout.write = function(msg) {
+        process.stdout.write = saveOut;
+        assert(msg.includes('macro'));
+        done();
+      };
+
+      assert(mus.renderString('{% import "test" %}'));
+    });
+
+    it('should throw error if url not found', () => {
+      try {
+        mus.renderString('{% import %}')
+      } catch (e) {
+        assert(e.message.includes('import url not found'));
+        return;
+      }
+      throw new Error('not throw error');
     });
   });
 
@@ -387,6 +417,15 @@ describe('lib#index', () => {
       mus.setFilter('passArg', (val, key) => val + key);
       assert(mus.renderString('{{ test | passArg("23") }}', { test: '1' }) === '123');
       assert(mus.renderString('{{ test | passArg("\n") | nl2br | safe }}', { test: '1' }) === '1<br/>');
+    });
+
+    it('should throw error if filter illegal', done => {
+      try {
+        mus.renderString('{{ test | passArg("23" }}', { test: '1' })
+      } catch (e) {
+        done();
+      }
+      throw new Error('not throw error');
     });
   });
 

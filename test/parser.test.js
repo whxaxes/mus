@@ -51,6 +51,11 @@ describe('lib#compile#parser', () => {
       assert(result.default === 'asd33=aaaa');
     });
 
+    it('should parse complex expression without error', () => {
+      const result = parser.parseAttr('a = `${bb.xx}11`')(obj);
+      assert(result.a === '211');
+    });
+
     it('should parse default string with key-value without error', () => {
       const result = parser.parseAttr('bb.xx + "aa\'aa" myGod=BBB')(obj);
       assert(result.default === '2aa\'aa');
@@ -79,6 +84,25 @@ describe('lib#compile#parser', () => {
           assert(scope.cc === null);
           assert(scope.aa === 'g');
         })('123', null, '11');
+    });
+
+    it('should parse complex expression without error', () => {
+      parser.parseMacroExpr('test(a = `${a}11`)')
+        .genRender({ a: 123 }, scope => {
+          assert(scope.a === '12311');
+        })();
+    });
+
+    it('should throw error if expression illegal', done => {
+      try {
+        parser.parseMacroExpr('test(a = [ 123 })')
+          .genRender({ a: 123 }, scope => {
+            assert(scope.a === '12311');
+          })();
+      } catch(e) {
+        done();
+      }
+      throw new Error('not throw error');
     });
 
     it('should parse default object without error', () => {
@@ -111,7 +135,6 @@ describe('lib#compile#parser', () => {
 
     it('should parse complex expression without error', () => {
       let result = parser.splitOperator('f.say + abc + 66 === nihao');
-      assert(!result.complex);
       assert(find(result, '_$o.f.say'));
       assert(find(result, '+'));
       assert(find(result, '_$o.abc'));
@@ -120,20 +143,17 @@ describe('lib#compile#parser', () => {
       assert(find(result, '_$o.nihao'));
 
       result = parser.splitOperator('"cool + 123" + b.sa  ? b.sa : a.sb');
-      assert(!result.complex);
       assert(find(result, '"cool + 123"'));
       assert(find(result, '_$o.b.sa'));
       assert(find(result, '_$o.b.sa'));
       assert(find(result, '_$o.a.sb'));
 
       result = parser.splitOperator('absc[ "nihao" + say] + you');
-      assert(!result.complex);
       assert(find(result, '_$o.absc'));
       assert(find(result, '_$o.say'));
       assert(find(result, '_$o.you'));
 
       result = parser.splitOperator('(abc_s > a && b) ? !obj.aa: bb.xx');
-      assert(!result.complex);
       assert(find(result, '_$o.abc_s'));
       assert(find(result, '_$o.a'));
       assert(find(result, '_$o.b'));
@@ -143,7 +163,6 @@ describe('lib#compile#parser', () => {
 
     it('should parse function string without error', () => {
       let result = parser.splitOperator('tell("nihao", true, 123, b.sasa)');
-      assert(!result.complex);
       assert(find(result, '_$o.tell'));
       assert(find(result, '123'));
       assert(find(result, '_$o.b.sasa'));
@@ -151,7 +170,6 @@ describe('lib#compile#parser', () => {
 
     it('should parse function string without error', () => {
       let result = parser.splitOperator(`a = bbb cc = 111`);
-      assert(!result.complex);
       assert(find(result, 'a'));
       assert(find(result, '_$o.bbb'));
       assert(find(result, 'cc'));
@@ -165,7 +183,6 @@ describe('lib#compile#parser', () => {
           cc: 233
         }
       }`);
-      assert(!result.complex);
       assert(find(result, 'test'));
       assert(find(result, 'bb'));
       assert(find(result, '_$o.you'));
@@ -185,8 +202,11 @@ describe('lib#compile#parser', () => {
     });
 
     it('should parse object string without error', () => {
-      let result = parser.splitOperator('{ abc: `asd${bbb}` }');
-      assert(result.complex);
+      let result = parser.splitOperator('{\r\n abc: `asd${bbb[aa + "bb"]}` \r\n}');
+      assert(find(result, '_$o.bbb'));
+      assert(find(result, '_$o.aa'));
+      assert(find(result, '"bb"'));
+      assert(find(result, 'abc'));
     });
   });
 });

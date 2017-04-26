@@ -11,4 +11,11 @@ describe('lib#compile#ast', () => {
     assert(root[3]._index === str.indexOf('{%'));
     assert(root[3].children[0]._index === str.indexOf('{{ abc }}'));
   });
+
+  it('macro should be equal in every time generating', () => {
+    const str = 'abc{{ test }} \n aaa{% if test %}{{ abc }}{% endif %}';
+    const a = ast(str);
+    const m = a.genMacro();
+    assert(m === a.genMacro());
+  });
 });
