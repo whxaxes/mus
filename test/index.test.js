@@ -217,6 +217,12 @@ describe('lib#index', () => {
       const html = '{% set sub = { abc: 123 } %}{{ sub.abc }}';
       assert(mus.renderString(html) === '123');
     });
+    
+    it('should support set expression', () => {
+      assert(mus.renderString(`{% set isAdult = item.age >= 18 %}{{ isAdult ? 'adult' : '' }}`, {
+        item: { age: 20 },
+      }) === 'adult');
+    });
 
     it('should throw error if has no key-value', () => {
       try {

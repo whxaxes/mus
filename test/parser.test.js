@@ -170,9 +170,9 @@ describe('lib#compile#parser', () => {
 
     it('should parse function string without error', () => {
       let result = parser.splitOperator(`a = bbb cc = 111`);
-      assert(find(result, 'a'));
+      assert(find(result, '_$o.a'));
       assert(find(result, '_$o.bbb'));
-      assert(find(result, 'cc'));
+      assert(find(result, '_$o.cc'));
       assert(find(result, '111'));
 
       result = parser.splitOperator(`{
