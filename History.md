@@ -1,4 +1,17 @@
 
+1.2.0 / 2017-04-26
+==================
+
+  * fix: fix bug of equal sign
+  * feat: remove with statement in render function
+  * test: completed parser's unit test
+  * feat: remove useless method
+  * feat: add autoescape option
+  * feat: optimize macro parser
+  * test: update test example
+  * feat: add import tag
+  * docs: update describtion of filter
+
 1.1.0 / 2017-04-20
 ==================
 
