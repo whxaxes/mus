@@ -2,6 +2,7 @@
 
 {% block body %}
   {% css "common/common.css" %}
+  {% require "common/global.css" %}
 
   {% require "part1" %}
 

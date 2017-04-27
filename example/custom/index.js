@@ -84,20 +84,36 @@ mus.setTag('require', {
   unary: true,
   attrName: 'url',
   render(attr, scope, compiler) {
-    const nameArr = attr.url.split(path.sep);
-    const fileName = nameArr[nameArr.length - 1];
     const dirName = path.dirname(compiler.fileUrl);
-    const tplUrl = path.resolve(
-      dirName, nameArr.concat(fileName).join(path.sep)
-    );
-    const cssUrl = path.resolve(
-      dirName, nameArr.concat([fileName + '.css']).join(path.sep)
-    );
+    const ext = path.extname(attr.url);
+    let tplUrl;
+    let cssUrl;
+    let scriptUrl;
+
+    if (ext === '.js') {
+      scriptUrl = path.resolve(dirName, attr.url);
+    } else if (ext === '.css') {
+      cssUrl = path.resolve(dirName, attr.url);
+    } else {
+      const nameArr = attr.url.split(path.sep);
+      const fileName = nameArr[nameArr.length - 1];
+      tplUrl = path.resolve(dirName, nameArr.concat(fileName).join(path.sep));
+      cssUrl = path.resolve(dirName, nameArr.concat([fileName + '.css']).join(path.sep));
+      scriptUrl = path.resolve(dirName, nameArr.concat([fileName + '.js']).join(path.sep));
+    }
+
     // save same name stylesheet
-    if (fs.existsSync(cssUrl)) {
+    if (cssUrl && fs.existsSync(cssUrl)) {
       styleList.push(fs.readFileSync(cssUrl, { encoding: 'utf-8' }));
     }
-    return compiler.include(tplUrl, scope);
+
+    if (scriptUrl && fs.existsSync(scriptUrl)) {
+      scriptList.push(fs.readFileSync(scriptUrl, { encoding: 'utf-8' }));
+    }
+
+    if (tplUrl) {
+      return compiler.include(tplUrl, scope);
+    }
   },
 });
 
