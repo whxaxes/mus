@@ -201,6 +201,13 @@ mus.renderString('{{ add(1, 2) }}', {
 }); // 3;
 ```
 
+builtin function
+
+- range(start[, end])
+- regular(str[, flag]) `create a regular object`
+
+> not support regular expression, using builtin regular function instead
+
 ### smarty style
 
 and or not
@@ -250,7 +257,7 @@ mus.renderString('{{ text | add(2) }}', {
 }); // 3;
 ```
 
-build-in filter 
+builtin filter 
 
  - nl2br `replace '\n' or '\r\n' to <br/>`
  - json `JSON.stringify`
@@ -340,6 +347,21 @@ mus.render('test');
 mus.render('test', {
     test: 2
 }); // {{ test }}
+```
+
+### filter
+
+```smarty
+{% filter replace(123, 321) %}
+  {% for item in list %}
+    {{ item }}
+  {% endfor %}
+{% endfilter %}
+```
+
+```javascript
+mus.render('test', { list: [123, 12, 123] });
+// output: 32112321
 ```
 
 ### macro
