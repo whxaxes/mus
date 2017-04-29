@@ -1,4 +1,13 @@
 
+1.3.0 / 2017-04-29
+==================
+
+  * docs: add builtin function description
+  * feat: add global function
+  * feat: support filter tag
+  * feat: update example
+  * fix: remove useless code
+
 1.2.0 / 2017-04-26
 ==================
 
