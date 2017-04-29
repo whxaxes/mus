@@ -68,6 +68,15 @@ describe('lib#utils#utils.js', () => {
   it('escape should run without error', () => {
     assert(utils.escape('<>') === '&lt;&gt;');
   });
+  
+  it('range should run without error', () => {
+    assert(utils.range(10).length === 10);
+    assert(utils.range(10)[0] === 0);
+    assert(utils.range(10)[9] === 9);
+    assert(utils.range(5, 10).length === 5);
+    assert(utils.range(5, 10)[0] === 5);
+    assert(utils.range(5, 10)[4] === 9);
+  });
 
   it('should throw friendly error', () => {
     const temp = '{{ 01112131415161718192021\n22232425262728293031\n323334353637383940 }}';

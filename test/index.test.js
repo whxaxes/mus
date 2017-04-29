@@ -559,6 +559,12 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test }}', { test: 321 }) === '321');
     });
 
+    it('should support global function', () => {
+      assert(mus.renderString('{% for item in range(1, 5) %}{{ item }}{% endfor %}') === '1234');
+      assert(mus.renderString('{{ \'123asd\' | replace(regular(\'\\\\d\', \'g\'), \'g\') }}') === 'gggasd');
+      assert(mus.renderString('{{ range }}{{ regular }}', { range: '123', regular: '' }) === '123');
+    });
+
     it('should throw error when render error', () => {
       try {
         mus.render('test7', { num: 11 });
