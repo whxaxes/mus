@@ -59,7 +59,7 @@ describe('lib#index', () => {
         assert(e.message.includes('Unexpected'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if expression has error', () => {
@@ -69,7 +69,7 @@ describe('lib#index', () => {
         assert(e.message.includes('abc.replace is not a function'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     // .replace(1, 2)
@@ -109,7 +109,7 @@ describe('lib#index', () => {
         return;
       }
 
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -129,7 +129,7 @@ describe('lib#index', () => {
         assert(e.message.includes('if condition invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if elseifBlock has no condition', () => {
@@ -139,7 +139,7 @@ describe('lib#index', () => {
         assert(e.message.includes('elseif condition invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if elseBlock behind elseifBlock', () => {
@@ -149,7 +149,7 @@ describe('lib#index', () => {
         assert(e.message.includes('else behind elseif'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if has no ifBlock', () => {
@@ -159,7 +159,7 @@ describe('lib#index', () => {
         assert(e.message.includes('if block not found'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -202,7 +202,7 @@ describe('lib#index', () => {
         assert(e.message.includes('expression invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -217,11 +217,11 @@ describe('lib#index', () => {
       const html = '{% set sub = { abc: 123 } %}{{ sub.abc }}';
       assert(mus.renderString(html) === '123');
     });
-    
+
     it('should support set expression', () => {
       assert(mus.renderString(`{% set isAdult = item.age >= 18 %}{{ isAdult ? 'adult' : '' }}`, {
-        item: { age: 20 },
-      }) === 'adult');
+          item: { age: 20 },
+        }) === 'adult');
     });
 
     it('should throw error if has no key-value', () => {
@@ -231,7 +231,7 @@ describe('lib#index', () => {
         assert(e.message.includes('set expression invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if only has key', () => {
@@ -241,7 +241,7 @@ describe('lib#index', () => {
         assert(e.message.includes('expression invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -271,7 +271,7 @@ describe('lib#index', () => {
         assert(e.message.includes('macro name was needed'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -299,7 +299,27 @@ describe('lib#index', () => {
         assert(e.message.includes('import url not found'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
+    });
+  });
+
+  describe('test filter', () => {
+    it('should support filter tag', () => {
+      assert(mus.renderString('{% filter replace(123, 321) %}123{% endfilter %}') === '321');
+      assert(mus.renderString(
+          '{% filter replace(123, 321) %}{% for item in list %}{{ item }}{% endfor %}{% endfilter %}',
+          { list: [123, 321, 123] }
+        ) === '321321321');
+    });
+
+    it('should throw error if filter tag has not function', done => {
+      try {
+        mus.renderString('{% filter %}123{% endfilter %}');
+      } catch (e) {
+        assert(e.message.includes('filter function not found'));
+        done();
+      }
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -318,7 +338,7 @@ describe('lib#index', () => {
         assert(e.message.includes('extends url invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if block has no name', () => {
@@ -328,7 +348,7 @@ describe('lib#index', () => {
         assert(e.message.includes('block name invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -366,7 +386,7 @@ describe('lib#index', () => {
         assert(e.message.includes('parse error, include url invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if include url not illegal', () => {
@@ -379,7 +399,7 @@ describe('lib#index', () => {
         assert(e.message.includes('include url invalid'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if args has error', () => {
@@ -392,7 +412,7 @@ describe('lib#index', () => {
         assert(e.message.includes('Unexpected identifier'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -431,7 +451,7 @@ describe('lib#index', () => {
       } catch (e) {
         done();
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -493,7 +513,7 @@ describe('lib#index', () => {
         assert(e.message.includes('Unexpected identifier'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error if register a build-in tag', () => {
@@ -506,7 +526,7 @@ describe('lib#index', () => {
         assert(e.message.includes('build-in tag'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error without render function', () => {
@@ -517,7 +537,7 @@ describe('lib#index', () => {
         assert(e.message.includes('render function must exist'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error without tagObj', () => {
@@ -528,7 +548,7 @@ describe('lib#index', () => {
         assert(e.message.includes('render function must exist'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 
@@ -546,7 +566,7 @@ describe('lib#index', () => {
         assert(e.message.includes('replace is not a function'));
         return;
       }
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
 
     it('should throw error when meeting unknown filter', () => {
@@ -556,7 +576,7 @@ describe('lib#index', () => {
         return;
       }
 
-      throw new Error('not throw error')
+      throw new Error('didn\'t throw error')
     });
 
     it('should support self-defined filter', () => {
@@ -571,7 +591,7 @@ describe('lib#index', () => {
         return;
       }
 
-      throw new Error('not throw error')
+      throw new Error('didn\'t throw error')
     });
 
     it('should run without error when has no endfor', done => {
@@ -651,7 +671,7 @@ describe('lib#index', () => {
         return;
       }
 
-      throw new Error('not throw error');
+      throw new Error('didn\'t throw error');
     });
   });
 });
