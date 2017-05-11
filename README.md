@@ -27,13 +27,13 @@ Fastest is Mus#renderSimple
 ## Quick start
 
 ```terminal
-npm install node-mus
+npm install node-mus --save
 ```
 
 Or 
 
 ```terminal
-yarn install node-mus
+yarn add node-mus --save
 ```
 
 Simple demo
