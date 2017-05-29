@@ -1,4 +1,12 @@
 
+1.4.0 / 2017-05-29
+==================
+
+  * docs: add description of regular expression
+  * test: add unittest of regexp
+  * feat: support regexp in template
+  * Update README.md
+
 1.3.0 / 2017-04-29
 ==================
 
