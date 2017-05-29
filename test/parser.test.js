@@ -99,7 +99,7 @@ describe('lib#compile#parser', () => {
           .genRender({ a: 123 }, scope => {
             assert(scope.a === '12311');
           })();
-      } catch(e) {
+      } catch (e) {
         done();
       }
       throw new Error('not throw error');
@@ -207,6 +207,22 @@ describe('lib#compile#parser', () => {
       assert(find(result, '_$o.aa'));
       assert(find(result, '"bb"'));
       assert(find(result, 'abc'));
+    });
+
+    it('should parse regexp string without error', () => {
+      let result = parser.splitOperator('r/[1-6]/ig.test(youku)');
+      assert(find(result, '/[1-6]/ig'));
+      assert(find(result, '.test'));
+      assert(find(result, '_$o.youku'));
+
+      result = parser.splitOperator('"test".replace(r/^https?.*/i, "")');
+      assert(find(result, '"test"'));
+      assert(find(result, '/^https?.*/i'));
+      assert(find(result, '.replace'));
+
+      result = parser.splitOperator(`"test".replace(r/^ht\\/tps?.*/i, "")`);
+      assert(find(result, '/^ht\\/tps?.*/i'));
+      assert(find(result, '.replace'));
     });
   });
 });

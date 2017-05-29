@@ -590,6 +590,19 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ test | aaa }}', { test: '123' }) === '123aaa');
     });
 
+    it('should support regexp', () => {
+      const str = mus.render('test9', {
+        test1: '123',
+        test2: 'aBc22',
+        test3: '/abc/bba/11',
+        test4: 'fooly'
+      });
+      assert(str.includes('aaa'));
+      assert(str.includes('bbb22'));
+      assert(str.includes('regexp'));
+      assert(str.includes('\\abc\\bba/11'));
+    });
+
     it('should throw error when meeting unknown block', () => {
       try {
         mus.renderString('abasdb\naaa{% say %}');
