@@ -206,7 +206,15 @@ builtin function
 - range(start[, end])
 - regular(str[, flag]) `create a regular object`
 
-> not support regular expression, using builtin regular function instead
+### regular expression
+
+It needs to be prefixed with `r`.
+
+```javascript
+mus.renderString('{{ test | replace(r/[a-z]/gi, 'b') }}', {
+  test: 'aBc11cc'
+}); // bbb11bb;
+```
 
 ### smarty style
 
