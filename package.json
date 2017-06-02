@@ -1,6 +1,6 @@
 {
   "name": "node-mus",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "nodejs template library",
   "main": "lib/index.js",
   "scripts": {
@@ -31,5 +31,17 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whxaxes/mus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/whxaxes/mus/issues"
+  },
+  "homepage": "https://github.com/whxaxes/mus#readme"
 }
