@@ -125,6 +125,43 @@ describe('lib#compile#parser', () => {
     });
   });
 
+  describe('parseNormalAttr', () => {
+    it('should support splitting by comma, colon and space', () => {
+      const keyList = [',', ';', ' '];
+      keyList.forEach(key => {
+        let argIndex = 0;
+        parser.parseNormalAttr(key, `name${key} cc = { abc: 11, bbb: 11, ccc: a === bb }${key} bb = '123'${key} aa = test`, (key, value, base) => {
+          switch (argIndex) {
+            case 0:
+              assert(!key);
+              assert(value === '_$o.name');
+              assert(base === 'name');
+              break;
+            case 1:
+              assert(key === 'cc');
+              assert(value === '{ abc: 11, bbb: 11, ccc: _$o.a === _$o.bb }');
+              assert(base === '{ abc: 11, bbb: 11, ccc: a === bb }');
+              break;
+            case 2:
+              assert(key === 'bb');
+              assert(value === '\'123\'');
+              assert(base === '\'123\'');
+              break;
+            case 3:
+              assert(key === 'aa');
+              assert(value === '_$o.test');
+              assert(base === 'test');
+              break;
+            default:
+              break;
+          }
+          argIndex++;
+        });
+        assert(argIndex === 4);
+      })
+    });
+  });
+
   describe('splitOperator', () => {
     it('should parse simple expression without error', () => {
       assert(find(parser.splitOperator('abc'), '_$o.abc'));
