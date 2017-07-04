@@ -1,4 +1,11 @@
 
+1.5.0 / 2017-07-04
+==================
+
+  * feat: support extending processor
+  * feat: optimize attr parser
+  * Update README.md
+
 1.4.0 / 2017-05-29
 ==================
 
