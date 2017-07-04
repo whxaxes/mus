@@ -18,4 +18,15 @@ describe('lib#compile#ast', () => {
     const m = a.genMacro();
     assert(m === a.genMacro());
   });
+
+  it('ast should support extending processor', done => {
+    const str = '{{ test }}';
+    ast(str, {
+      processor: {
+        variable() {
+          done();
+        }
+      }
+    });
+  });
 });
