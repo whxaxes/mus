@@ -122,6 +122,13 @@ describe('lib#index', () => {
       assert(mus.renderString(html) === '321');
     });
 
+    it('should support elif as elseif', () => {
+      const html = '{% if test %}<div>{{ test }}</div>{% elif gg === "123" %}{{ gg }}{% else %}321{% endif %}';
+      assert(mus.renderString(html, { test: '123' }) === '<div>123</div>');
+      assert(mus.renderString(html, { gg: '123' }) === '123');
+      assert(mus.renderString(html) === '321');
+    });
+
     it('should throw error if ifBlock has no condition', () => {
       try {
         mus.renderString('{% if %}<div>{{ test }}</div>{% endif %}')
