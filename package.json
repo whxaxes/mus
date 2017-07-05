@@ -1,6 +1,6 @@
 {
   "name": "node-mus",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "nodejs template library",
   "main": "lib/index.js",
   "scripts": {
