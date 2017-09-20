@@ -4,9 +4,9 @@
   "description": "nodejs template library",
   "main": "lib/index.js",
   "scripts": {
-    "test": "npm run lint && npm run cov",
-    "test-local": "mocha test/**/*.test.js -r intelli-espower-loader",
-    "cov": "istanbul cover _mocha test/**/*.test.js",
+    "test": "npm run lint-fix && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
     "lint": "eslint --ext .js lib",
     "lint-fix": "eslint --ext .js --fix lib",
     "example": "node example/server",

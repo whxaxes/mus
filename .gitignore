@@ -3,4 +3,6 @@ node_modules/
 .idea/
 .vscode/
 .DS_Store
-npm-debug.log
+npm-debug.log*
+yarn.lock
+yarn-error.log*
