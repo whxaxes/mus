@@ -15,6 +15,7 @@
   "author": "Axes",
   "license": "MIT",
   "dependencies": {
+    "egg-bin": "^4.3.3",
     "node-underline": "^1.0.0"
   },
   "devDependencies": {
