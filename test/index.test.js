@@ -572,6 +572,20 @@ describe('lib#index', () => {
       assert(mus.renderString('{{ range }}{{ regular }}', { range: '123', regular: '' }) === '123');
     });
 
+    it('should support compress', () => {
+      const mus = new Mus({ compress: true });
+      assert(mus.renderString('{% for item in range(1, 5) %}\n  {{ item }}\n{% endfor %}') === '1234');
+      assert(mus.renderString(`
+      {% for item in range(1, 5) %}
+        {{ item }}
+      {% endfor %}
+      <script>
+        // 13123
+        const a = 123;
+      </script>
+      `) === '1234<script>// 13123\nconst a = 123;</script>');
+    });
+
     it('should throw error when render error', () => {
       try {
         mus.render('test7', { num: 11 });
@@ -589,7 +603,7 @@ describe('lib#index', () => {
         return;
       }
 
-      throw new Error('didn\'t throw error')
+      throw new Error('didn\'t throw error');
     });
 
     it('should support self-defined filter', () => {
