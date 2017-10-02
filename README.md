@@ -40,6 +40,7 @@ mus.renderString('{{ mus }}', { mus: 'hello mus' }); // hello mus;
 - noCache  `Boolean`, `default: false`
 - ext `String`, `default: tpl`
 - autoescape `Boolean`, `default: true`
+- compress `Boolean`, `default: false`
 
 e.g.
 
