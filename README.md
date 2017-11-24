@@ -101,7 +101,7 @@ create a custom tag.
 
 #### tagOptions
 
-- unary `Boolean`, `if true, endtag was needed`
+- unary `Boolean`, `if true, endtag was no need`
 - attrName `String`, `default attribute name, default is 'default'`
 - render(attr, scope, compiler) `Function`, `render function`
 
