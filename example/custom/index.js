@@ -6,26 +6,31 @@ const mus = new Mus({
   baseDir: __dirname,
   noCache: true,
 });
-let header = '';
-let body = '';
-const styleList = [];
-const scriptList = [];
 
 // compose html
 mus.setTag('html', {
-  render(attr, scope, compiler) {
-    compiler.compile(this.children, scope);
+  render(attr, data, compiler) {
+    // init scope
+    compiler.store.header = '';
+    compiler.store.body = '';
+    compiler.store.styleList = [];
+    compiler.store.scriptList = [];
+
+    // compile children node
+    compiler.compile(this.children, data);
+
+    // render full html
     return `<html lang="${attr.lang}">
       <head>
-        ${header}
+        ${compiler.store.header}
         <style>
-          ${styleList.join('')}
+          ${compiler.store.styleList.join('')}
         </style>
       </head>
       <body>
-        ${body}
+        ${compiler.store.body}
         <script>
-          ${scriptList.join('')}
+          ${compiler.store.scriptList.join('')}
         </script>
       </body>
     </html>`;
@@ -34,25 +39,25 @@ mus.setTag('html', {
 
 // collect head data
 mus.setTag('head', {
-  render(attr, scope, compiler) {
-    header = compiler.compile(this.children, scope);
+  render(attr, data, compiler) {
+    compiler.store.header = compiler.compile(this.children, data);
   },
 });
 
 // collect body data
 mus.setTag('body', {
-  render(attr, scope, compiler) {
-    body = compiler.compile(this.children, scope);
+  render(attr, data, compiler) {
+    compiler.store.body = compiler.compile(this.children, data);
   },
 });
 
 // collect stylesheet
 mus.setTag('style', {
-  render(attr, scope, compiler) {
+  render(attr, data, compiler) {
     const atf = attr.hasOwnProperty('atf') ? attr.atf : true;
-    const styleContent = compiler.compile(this.children, scope);
+    const styleContent = compiler.compile(this.children, data);
     if (atf) {
-      styleList.push(styleContent);
+      compiler.store.styleList.push(styleContent);
     } else {
       return `<style>${styleContent}</style>`;
     }
@@ -63,19 +68,19 @@ mus.setTag('style', {
 mus.setTag('css', {
   unary: true,
   attrName: 'href',
-  render(attr, scope, compiler) {
+  render(attr, data, compiler) {
     const cssUrl = path.resolve(
       path.dirname(compiler.fileUrl),
       attr.href
     );
-    styleList.push(fs.readFileSync(cssUrl, { encoding: 'utf-8' }));
+    compiler.store.styleList.push(fs.readFileSync(cssUrl, { encoding: 'utf-8' }));
   },
 });
 
 // collect script
 mus.setTag('script', {
-  render(attr, scope, compiler) {
-    scriptList.push(compiler.compile(this.children, scope));
+  render(attr, data, compiler) {
+    compiler.store.scriptList.push(compiler.compile(this.children, data));
   },
 });
 
@@ -83,7 +88,7 @@ mus.setTag('script', {
 mus.setTag('require', {
   unary: true,
   attrName: 'url',
-  render(attr, scope, compiler) {
+  render(attr, data, compiler) {
     const dirName = path.dirname(compiler.fileUrl);
     const ext = path.extname(attr.url);
     let tplUrl;
@@ -104,25 +109,20 @@ mus.setTag('require', {
 
     // save same name stylesheet
     if (cssUrl && fs.existsSync(cssUrl)) {
-      styleList.push(fs.readFileSync(cssUrl, { encoding: 'utf-8' }));
+      compiler.store.styleList.push(fs.readFileSync(cssUrl, { encoding: 'utf-8' }));
     }
 
     if (scriptUrl && fs.existsSync(scriptUrl)) {
-      scriptList.push(fs.readFileSync(scriptUrl, { encoding: 'utf-8' }));
+      compiler.store.scriptList.push(fs.readFileSync(scriptUrl, { encoding: 'utf-8' }));
     }
 
     if (tplUrl) {
-      return compiler.include(tplUrl, scope);
+      return compiler.include(tplUrl, data);
     }
   },
 });
 
 module.exports = (req, res) => {
-  header = '';
-  body = '';
-  styleList.length = 0;
-  scriptList.length = 0;
-
   res.end(mus.render(req.requestUrl, {
     title: 'Hello Custom',
     dataList: [
