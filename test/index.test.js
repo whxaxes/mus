@@ -482,8 +482,8 @@ describe('lib#index', () => {
       const mus = new Mus();
       mus.setTag('style', {
         noAttr: true,
-        render(attr, scope, compiler) {
-          return `<style>${compiler.compile(this.children, scope)}</style>`
+        render(attr, scope, { compile, el }) {
+          return `<style>${compile(el.children, scope)}</style>`
         }
       });
 
