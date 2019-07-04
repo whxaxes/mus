@@ -442,3 +442,25 @@ patch:
         patched: '2019-07-04T08:40:35.619Z'
     - egg-bin > autod > babel-preset-stage-0 > babel-preset-stage-1 > babel-preset-stage-2 > babel-preset-stage-3 > babel-plugin-transform-async-generator-functions > babel-helper-remap-async-to-generator > babel-helper-function-name > babel-template > babel-traverse > babel-types > lodash:
         patched: '2019-07-04T08:40:35.619Z'
+    - snyk > inquirer > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-mvn-plugin > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-config > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
+    - snyk > snyk-php-plugin > @snyk/composer-lockfile-parser > lodash:
+        patched: '2019-07-04T10:25:49.993Z'
