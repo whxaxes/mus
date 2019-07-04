@@ -10,13 +10,16 @@
     "lint": "eslint --ext .js lib",
     "lint-fix": "eslint --ext .js --fix lib",
     "example": "node example/server",
-    "benchmark": "node benchmark/index"
+    "benchmark": "node benchmark/index",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Axes",
   "license": "MIT",
   "dependencies": {
     "egg-bin": "^4.3.3",
-    "node-underline": "^1.0.0"
+    "node-underline": "^1.0.0",
+    "snyk": "^1.190.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.3",
@@ -44,5 +47,6 @@
   "bugs": {
     "url": "https://github.com/whxaxes/mus/issues"
   },
-  "homepage": "https://github.com/whxaxes/mus#readme"
+  "homepage": "https://github.com/whxaxes/mus#readme",
+  "snyk": true
 }
