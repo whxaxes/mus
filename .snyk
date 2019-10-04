@@ -442,3 +442,12 @@ patch:
         patched: '2019-07-04T08:40:35.619Z'
     - egg-bin > autod > babel-preset-stage-0 > babel-preset-stage-1 > babel-preset-stage-2 > babel-preset-stage-3 > babel-plugin-transform-async-generator-functions > babel-helper-remap-async-to-generator > babel-helper-function-name > babel-template > babel-traverse > babel-types > lodash:
         patched: '2019-07-04T08:40:35.619Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - egg-bin > autod > urllib > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T08:38:00.450Z'
+    - egg-bin > inspector-proxy > urllib > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T08:38:00.450Z'
+    - egg-bin > autod > urllib > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T08:38:00.450Z'
+    - egg-bin > inspector-proxy > urllib > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T08:38:00.450Z'
