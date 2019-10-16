@@ -451,3 +451,7 @@ patch:
         patched: '2019-10-04T08:38:00.450Z'
     - egg-bin > inspector-proxy > urllib > proxy-agent > pac-proxy-agent > https-proxy-agent:
         patched: '2019-10-04T08:38:00.450Z'
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-05T08:38:05.224Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-05T08:38:05.224Z'
